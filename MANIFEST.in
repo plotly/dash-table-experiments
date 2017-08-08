@@ -1,0 +1,5 @@
+include dash_table_experiments/bundle.js
+include dash_table_experiments/bundle.js.map
+include dash_table_experiments/metadata.json
+include README.md
+include LICENSE.md

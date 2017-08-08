@@ -1,0 +1,40 @@
+{
+  "name": "dash-table-experiments",
+  "version": "0.0.1",
+  "description": "Dash table experiments",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/plotly/dash-table-experiments.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/plotly/dash-table-experiments/issues"
+  },
+  "homepage": "https://github.com/plotly/dash-table-experiments",
+  "scripts": {
+    "copy-lib": "cp lib/* dash_table_experiments",
+    "demo": "builder run demo",
+    "install-local": "npm run copy-lib && python setup.py install",
+    "prepublish": "npm test && builder run build-dist && npm run copy-lib",
+    "publish-all": "npm publish && python setup.py sdist upload",
+    "publish-pypi": "npm run prepublish && python setup.py sdist upload",
+    "start": "builder run build-dev",
+    "test": "builder run check",
+    "test-watch": "builder run test-frontend-watch",
+    "test-debug": "builder run test-frontend-debug",
+    "uninstall-local": "pip uninstall dash-table-experiments -y"
+  },
+  "dependencies": {
+    "builder": "3.2.2",
+    "dash-components-archetype": "^0.2.7",
+    "prop-types": "^15.5.9",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
+  },
+  "devDependencies": {
+    "dash-components-archetype-dev": "^0.2.7",
+    "enzyme": "^2.8.2",
+    "react-test-renderer": "^15.5.4"
+  }
+}
