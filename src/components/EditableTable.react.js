@@ -8,7 +8,6 @@ class Cell extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isHovering: false,
             isSelected: false
         }
     }
@@ -33,10 +32,10 @@ class Cell extends Component {
 
     render() {
         const {editable, updateValue, value} = this.props;
-        const {isHovering, isSelected} = this.state;
+        const {isSelected} = this.state;
         if (editable && isSelected) {
             return (
-                <td>
+                <td style={{'width': 60, 'padding': 0}}>
                     <input
                         type="text"
                         value={value}
@@ -57,13 +56,10 @@ class Cell extends Component {
                     onClick={() => {
                         this.setState({isSelected: true});
                     }}
-                    onMouseEnter={() => this.setState({isHovering: true})}
-                    onMouseLeave={() => this.setState({isHovering: false})}
                     style={{
                         'box-sizing': 'border-box',
-                        'border': isHovering ? 'thin blue solid' : 'thin white solid',
                         'padding': '5px',
-                        'cursor': isHovering ? 'pointer' : 'defualt'
+                        'width': '60px'
                     }}
                 >
                     {value}
@@ -72,8 +68,6 @@ class Cell extends Component {
         }
     }
 }
-
-
 
 export default class EditableTable extends Component {
     constructor(props) {
@@ -85,7 +79,7 @@ export default class EditableTable extends Component {
     }
 
     render() {
-        const {editable, dataframe} = this.props;
+        const {dataframe, editable, id, setProps} = this.props;
 
         const columnNames = keys(dataframe);
         const index = keys(dataframe[columnNames[0]]);
@@ -96,6 +90,7 @@ export default class EditableTable extends Component {
                     'box-sizing': 'border-box',
                     'border-collapse': 'collapse'
                 }}
+                id={id}
             >
                 {/* Render Columns so that each column can have the
                     same parent width */}
@@ -128,6 +123,9 @@ export default class EditableTable extends Component {
                                     this.setState({
                                         dataframe: newDataframe
                                     });
+                                    if(setProps) {
+                                        setProps({dataframe});
+                                    }
                                 }}
                             />
                         ))}
@@ -141,17 +139,12 @@ export default class EditableTable extends Component {
 }
 
 EditableTable.defaultProps = {
-    editable: true,
-    dataframe: {
-        'Column 1': {
-            '0': 4,
-            '1': 'Another cell',
-            '2': 5
-        },
-        'Column 2': {
-            '0': 8,
-            '1': 4,
-            '2': 'NYC'
-        }
-    }
+    editable: false
+}
+
+EditableTable.propTypes = {
+    id: PropTypes.string,
+    dataframe: PropTypes.object,
+    editable: PropTypes.bool,
+    setProps: PropTypes.func
 }

@@ -10,7 +10,9 @@ const rootInstance = ReactDOM.render(
     document.getElementById('react-demo-entry-point')
 );
 
+/* eslint-disable */
 require('react-hot-loader/Injection').RootInstanceProvider.injectProvider({
+/* eslint-enable */
     getRootInstances: function () {
       // Help React Hot Loader figure out the root component instances on the page:
       return [rootInstance];
