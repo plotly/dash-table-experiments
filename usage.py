@@ -8,26 +8,34 @@ app = dash.Dash()
 
 app.scripts.config.serve_locally=True
 
-df_simple = pd.DataFrame({
+DF_INITIAL = pd.DataFrame({
     'Column 1': [1, 2, 3],
-    'Column 2': [1, 19, 10]
+    'Column 2': [1, 19, 10],
+    'Column 3': [3, 1, 2],
 })
-
-df_complex = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/1962_2006_walmart_store_openings.csv')
 
 app.layout = html.Div([
     dt.EditableTable(
         id='editable-table',
         editable=True,
-        dataframe=df_simple.to_dict()
+        dataframe=DF_INITIAL.to_dict(),
+
+        # Optional attributes
+        column_order=DF_INITIAL.columns,
+        merged_styles={
+            'td': {
+                'border': 'thin lightgrey solid'
+            }
+        },
+        index_name='Index',
+        types={
+            'Column 1': 'numeric',
+            'Column 2': 'numeric',
+            'Column 3': 'numeric'
+        }
     ),
 
-    dcc.Graph(id='my-graph', animate=True),
-
-    html.Div(
-        dt.EditableTable(dataframe=df_complex.iloc[0:50].to_dict()),
-        style={'height': 100, 'overflow-y': 'scroll'}
-    )
+    dcc.Graph(id='my-graph'),
 
 ])
 
@@ -39,15 +47,14 @@ def update_graph(dataframe_dict):
     df = pd.DataFrame(dataframe_dict)
     return {
         'data': [{
-            'x': df['Column 1'],
-            'y': df['Column 2']
-        }]
+            'x': df.index,
+            'y': df[c],
+            'mode': 'lines+markers',
+            'marker': {'size': 12},
+            'line': {'width': 4},
+            'name': c
+        } for c in df.columns]
     }
-
-app.css.append_css({"external_url": [
-    "https://codepen.io/chriddyp/pen/bWLwgP.css",
-    "https://codepen.io/chriddyp/pen/rzyyWo.css"
-]})
 
 if __name__ == '__main__':
     app.run_server(debug=True)
