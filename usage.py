@@ -2,6 +2,7 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_table_experiments as dt
+import json
 import pandas as pd
 
 app = dash.Dash()
@@ -18,7 +19,7 @@ app.layout = html.Div([
     dt.EditableTable(
         id='editable-table',
         editable=True,
-        dataframe=DF_INITIAL.to_dict(),
+        dataframe=json.loads(DF_INITIAL.to_json()),
 
         # Optional attributes
         column_order=DF_INITIAL.columns,
