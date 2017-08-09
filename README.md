@@ -6,4 +6,8 @@ The Dash Table component will likely be merged into the [`dash-core-components`]
 
 ## Usage
 
+```
+$ pip install dash-table-experiments
+```
+
 See [CHANGELOG.md](https://github.com/plotly/dash-table-experiments/blob/master/CHANGELOG.md)
