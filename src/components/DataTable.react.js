@@ -2,16 +2,6 @@ import React, {Component, PropTypes} from 'react';
 import ReactDataGrid from 'react-data-grid';
 import {type} from 'ramda';
 
-const DATAFRAME = {
-    'data': [
-        [1, 3, 'Montréal'],
-        [4, 1, 'SF'],
-        [5, 8, 'New York City, United States of America']
-    ],
-    'columns': ['Column 1', 'Column 2', 'Column 3'],
-    'index': [1, 4, 8]
-}
-
 class DataTable extends Component {
     constructor(props) {
         super(props);
@@ -22,8 +12,8 @@ class DataTable extends Component {
     }
 
     updateState(props) {
-        const {dataframe} = this.props;
-        const {columns, index, data} = dataframe;
+        const {dataframe} = props;
+        const {columns, data} = dataframe;
         const newState = {
             rows: data
         };
@@ -116,7 +106,7 @@ DataTable.propTypes = {
     row_height: PropTypes.number,
     row_scroll_timeout: PropTypes.number,
     // TODO - row_selection
-    tab_index: PropTypes.number,
+    tab_index: PropTypes.number
 }
 
 export default DataTable;

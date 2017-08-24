@@ -56,7 +56,7 @@ class Demo extends Component {
 
                 <h2>DataTable</h2>
                 <DataTable dataframe={DATAFRAME}/>
-{/*
+
                 <h2>VirtualizedTable Component</h2>
                 <VirtualizedTable
                     dataframe={this.state.virtualized.dataframe}
@@ -83,7 +83,7 @@ class Demo extends Component {
                 <pre>
                     {JSON.stringify(this.state.editable, null, 2)}
                 </pre>
-*/}
+
             </div>
         );
     }
