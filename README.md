@@ -4,6 +4,8 @@ What does a Dash Table component look like? `dash-table-experiments` is a packag
 
 The Dash Table component will likely be merged into the [`dash-core-components`](https://github.com/plotly/dash-core-componets) once it stabilizes.
 
+![Dash DataTable](https://github.com/plotly/dash-table-experiments/raw/master/images/DataTable.gif)
+
 ## Usage
 
 ```
