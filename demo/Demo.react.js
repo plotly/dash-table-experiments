@@ -55,7 +55,7 @@ class Demo extends Component {
             <div>
 
                 <h2>DataTable</h2>
-                <DataTable dataframe={DATAFRAME}/>
+                <DataTable dataframe={DATAFRAME} filterable={true}/>
 
                 <h2>VirtualizedTable Component</h2>
                 <VirtualizedTable

@@ -6,8 +6,6 @@ The Dash Table component will likely be merged into the [`dash-core-components`]
 
 ## Usage
 
-![editable-table](https://user-images.githubusercontent.com/1280389/29104340-daa2f7ec-7c92-11e7-81bc-ac45e34bd21f.gif)
-
 ```
 $ pip install dash-table-experiments
 ```

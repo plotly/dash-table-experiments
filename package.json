@@ -1,6 +1,6 @@
 {
   "name": "dash-table-experiments",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Dash table experiments",
   "main": "lib/index.js",
   "repository": {
@@ -33,6 +33,7 @@
     "ramda": "^0.24.1",
     "react": "^15.5.4",
     "react-data-grid": "^2.0.58",
+    "react-data-grid-addons": "^2.0.58",
     "react-dom": "^15.5.4",
     "react-virtualized": "^9.9.0"
   },
