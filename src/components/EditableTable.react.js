@@ -235,7 +235,8 @@ EditableTable.defaultProps = {
 }
 
 const STYLE_SHAPE = {};
-keys(EditableTable.defaultProps).forEach(k => STYLE_SHAPE[k] = PropTypes.object);
+keys(EditableTable.defaultProps.base_styles).forEach(
+    k => STYLE_SHAPE[k] = PropTypes.object);
 
 EditableTable.propTypes = {
     /**
