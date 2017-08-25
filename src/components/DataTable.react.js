@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import ReactDataGrid from 'react-data-grid';
 import {Toolbar, Data} from 'react-data-grid-addons';
-import R, {type} from 'ramda';
+import R from 'ramda';
 
 class DataTable extends Component {
     constructor(props) {
@@ -10,63 +10,72 @@ class DataTable extends Component {
 
         this.getSize = this.getSize.bind(this);
         this.handleFilterChange = this.handleFilterChange.bind(this);
+        this.handleGridRowsUpdated = this.handleGridRowsUpdated.bind(this);
         this.handleGridSort = this.handleGridSort.bind(this);
         this.rowGetter = this.rowGetter.bind(this);
-        this.updateState = this.updateState.bind(this);
+        this.propsToState = this.propsToState.bind(this);
+        this.updateProps = this.updateProps.bind(this);
+
+        this._originalRows = [];
     }
 
-    updateState(props) {
-        const {dataframe} = props;
-        const {columns, data} = dataframe;
+    propsToState(props, prevProps) {
         const newState = {
-            rows: data.map(row => {
-                const rowObject = {};
-                row.forEach((cell, j) => {
-                    rowObject[columns[j]] = cell;
-                });
-                return rowObject;
-            })
+            rows: props.rows
         };
         if (props.sortable) {
-            newState.originalRows = newState.rows;
+            this._originalRows = props.rows;
         }
-        if (props.filterable) {
-            newState.filters = {};
+        if (props.filterable && !prevProps.filterable) {
+            this.updateProps({filters: {}});
         }
-        if (type(columns[0]) === 'Object') {
-            newState.columns = columns;
-        } else {
-            newState.columns = columns.map(c => ({
-                key: c,
-                name: c,
-                editable: false,
-                sortable: props.sortable ? true : false,
-                filterable: props.filterable ? true : false
-            }));
-        }
+
+        newState.columns = R.keys(newState.rows[0]).map(c => ({
+            key: c,
+            name: c,
+            editable: Boolean(props.editable),
+            sortable: Boolean(props.sortable),
+            filterable: Boolean(props.filterable)
+        }));
+
         this.setState(newState);
     }
 
     componentWillMount() {
-        this.updateState(this.props);
+        this.propsToState(this.props, {});
     }
 
     componentWillReceiveProps(nextProps) {
-        this.updateState(nextProps);
+        this.propsToState(nextProps, this.props);
+    }
+
+    updateProps(obj) {
+        /* eslint-disable */
+        console.warn(`updateProps: ${JSON.stringify(obj, null, 2)}`);
+        /* eslint-enable */
+        if(this.props.setProps) {
+            this.props.setProps(obj);
+        } else {
+            this.setState(obj);
+        }
     }
 
     onClearFilters() {
-        this.setState({filters: {}});
+        this.updateProps({filters: {}});
     }
 
     handleFilterChange(filter) {
-        const newFilters = R.merge({}, this.state.filters);
+        const newFilters = R.merge({}, (
+            this.props.setProps ? this.props.filters : this.state.filters
+        ));
         if (filter.filterTerm) {
             newFilters[filter.column.key] = filter;
         } else {
             delete newFilters[filter.column.key];
         }
-        this.setState({filters: newFilters});
+
+        this.updateProps({filters: newFilters});
+
     }
 
     handleGridSort(sortColumn, sortDirection) {
@@ -82,15 +91,46 @@ class DataTable extends Component {
             this.state.originalRows.slice(0) : this.state.rows.sort(comparer)
         );
 
-        this.setState({rows});
+        this.updateProps({
+            rows,
+            sortColumn,
+            sortDirection
+        });
+
     }
 
-    getRows() {
-        return Data.Selectors.getRows(this.state);
+    handleGridRowsUpdated({fromRow, toRow, updated}) {
+        const {rows} = this.state;
+        for (let i=fromRow; i<=toRow; i++) {
+            rows[i] = R.merge(rows[i], updated);
+        }
+
+
+        this.updateProps({
+            row_update: R.append(
+                this.props.row_update,
+                [{
+                    from_row: fromRow,
+                    to_row: toRow,
+                    updated: updated
+                }]
+            ),
+            rows: rows
+        });
+
     }
 
     getSize() {
         return this.getRows().length;
+    }
+
+    getRows() {
+        if (this.props.setProps) {
+            return Data.Selectors.getRows(this.props);
+        } else {
+            return Data.Selectors.getRows(this.state);
+        }
+
     }
 
     rowGetter(rowIdx) {
@@ -100,9 +140,8 @@ class DataTable extends Component {
 
     render() {
         const {
-            enable_cell_select,
+            editable,
             enable_drag_and_drop,
-            enable_row_select,
             filterable,
             header_row_height,
             min_height,
@@ -125,11 +164,14 @@ class DataTable extends Component {
             extraProps.onClearFilters = this.onClearFilters;
         }
 
+        extraProps.enableCellSelect = Boolean(editable);
+        if (editable) {
+            extraProps.onGridRowsUpdated = this.handleGridRowsUpdated;
+        }
+
         return  (
             <ReactDataGrid
-                enableCellSelect={enable_cell_select}
                 enableDragAndDrop={enable_drag_and_drop}
-                enableRowSelect={enable_row_select}
                 headerRowHeight={header_row_height}
                 minHeight={min_height}
                 minWidth={min_width}
@@ -148,15 +190,13 @@ class DataTable extends Component {
 }
 
 DataTable.propTypes = {
-    dataframe: PropTypes.shape({
-        data: PropTypes.arrayOf(PropTypes.array),
-        columns: PropTypes.arrayOf(PropTypes.string),
-        index: PropTypes.array
-    }),
-    enable_cell_select: PropTypes.bool,
-    enable_drag_and_drop: PropTypes.bool,
-    enable_row_select: PropTypes.bool,
+    id: PropTypes.string,
+    editable: PropTypes.bool,
     filterable: PropTypes.bool,
+    sortable: PropTypes.bool,
+
+    // These props are passed directly into the component
+    enable_drag_and_drop: PropTypes.bool,
     header_row_height: PropTypes.number,
     min_height: PropTypes.number,
     min_width: PropTypes.number,
@@ -169,14 +209,28 @@ DataTable.propTypes = {
     // }),
     row_height: PropTypes.number,
     row_scroll_timeout: PropTypes.number,
-    // TODO - row_selection
-    sortable: PropTypes.bool,
-    tab_index: PropTypes.number
+    tab_index: PropTypes.number,
+
+    // These props get updated
+    filters: PropTypes.object,
+    rows: PropTypes.arrayOf(PropTypes.shape),
+    row_update: PropTypes.shape({
+        from_row: PropTypes.number,
+        to_row: PropTypes.number,
+        updated: PropTypes.arrayOf(PropTypes.shape)
+    }),
+    sortColumn: PropTypes.object,
+    sortDirection: PropTypes.object,
+
+    // Dash supplied props
+    setProps: PropTypes.func
 }
 
 DataTable.defaultProps = {
+    editable: true,
     filterable: false,
-    sortable: true
+    sortable: true,
+    filters: {}
 }
 
 export default DataTable;
