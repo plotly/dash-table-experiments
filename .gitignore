@@ -4,6 +4,7 @@ dist/
 lib/
 lib/bundle.js*
 node_modules/
+dash_table_experiments/bundle.js*
 .npm
 vv/
 venv/
