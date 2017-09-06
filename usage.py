@@ -10,7 +10,8 @@ import plotly
 
 app = dash.Dash()
 
-app.scripts.config.serve_locally=True
+# app.scripts.config.serve_locally = True
+# app.css.config.serve_locally = True
 
 DF_WALMART = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/1962_2006_walmart_store_openings.csv')
 

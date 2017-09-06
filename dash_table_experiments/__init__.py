@@ -24,7 +24,16 @@ _js_dist = [
     }
 ]
 
-_css_dist = []
+_css_dist = [
+    {
+        "relative_package_path": "dash_table_experiments.css",
+        "external_url": (
+            "https://unpkg.com/dash-table-experiments@{}"
+            "/dash_table_experiments/dash_table_experiments.css"
+        ).format(__version__),
+        "namespace": "dash_table_experiments"
+    }
+]
 
 
 for _component in _components:
