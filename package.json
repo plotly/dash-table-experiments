@@ -1,6 +1,6 @@
 {
   "name": "dash-table-experiments",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Dash table experiments",
   "main": "lib/index.js",
   "repository": {
