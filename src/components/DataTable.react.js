@@ -12,8 +12,10 @@ class DataTable extends Component {
         this.handleFilterChange = this.handleFilterChange.bind(this);
         this.handleGridRowsUpdated = this.handleGridRowsUpdated.bind(this);
         this.handleGridSort = this.handleGridSort.bind(this);
-        this.rowGetter = this.rowGetter.bind(this);
+        this.onRowsDeselected = this.onRowsDeselected.bind(this);
+        this.onRowsSelected = this.onRowsSelected.bind(this);
         this.propsToState = this.propsToState.bind(this);
+        this.rowGetter = this.rowGetter.bind(this);
         this.updateProps = this.updateProps.bind(this);
 
         this._originalRows = [];
@@ -28,6 +30,10 @@ class DataTable extends Component {
         }
         if (props.filterable && !prevProps.filterable) {
             this.updateProps({filters: {}});
+        }
+        if (props.selected_rows &&
+            props.selected_rows !== prevProps.selected_rows) {
+            newState.selected_rows = props.selected_rows;
         }
 
         const columnNames = props.columns || R.keys(newState.rows[0]);
@@ -90,15 +96,24 @@ class DataTable extends Component {
         };
 
         const rows = (sortDirection === 'NONE' ?
-            this.state.originalRows.slice(0) : this.state.rows.sort(comparer)
+            this._originalRows.slice(0) : R.sort(comparer, this.state.rows)
         );
 
-        this.updateProps({
+        const update = {
             rows,
             sortColumn,
             sortDirection
-        });
+        };
 
+        if (this.props.row_selectable) {
+            // Update the index of the selected rows
+            const new_selected_rows = this.state.selected_rows.map(
+                i => R.findIndex(R.equals(this.state.rows[i]), rows)
+            );
+            update.selected_rows = new_selected_rows;
+        }
+
+        this.updateProps(update);
     }
 
     handleGridRowsUpdated({fromRow, toRow, updated}) {
@@ -135,6 +150,25 @@ class DataTable extends Component {
 
     }
 
+    onRowsSelected(rows) {
+        this.updateProps({
+            selected_rows:
+            this.state.selected_rows.concat(
+                rows.map(r => r.rowIdx)
+            )
+        });
+    }
+
+    onRowsDeselected(rows) {
+        let rowIndexes = rows.map(r => r.rowIdx);
+        this.updateProps({
+            selected_rows:
+            this.state.selected_rows.filter(
+                i => rowIndexes.indexOf(i) === -1
+            )
+        });
+    }
+
     rowGetter(rowIdx) {
         const rows = this.getRows();
         return rows[rowIdx];
@@ -150,11 +184,12 @@ class DataTable extends Component {
             min_width,
             row_height,
             row_scroll_timeout,
+            row_selectable,
             sortable,
             tab_index
         } = this.props;
 
-        const {columns} = this.state;
+        const {columns, selected_rows} = this.state;
 
         const extraProps = {};
         if (sortable) {
@@ -169,6 +204,18 @@ class DataTable extends Component {
         extraProps.enableCellSelect = Boolean(editable);
         if (editable) {
             extraProps.onGridRowsUpdated = this.handleGridRowsUpdated;
+        }
+
+        if (row_selectable) {
+            extraProps.rowSelection = {
+                showCheckbox: true,
+                enableShiftSelect: true,
+                onRowsSelected: this.onRowsSelected,
+                onRowsDeselected: this.onRowsDeselected,
+                selectBy: {
+                    indexes: selected_rows
+                }
+            };
         }
 
         return  (
@@ -203,6 +250,9 @@ DataTable.propTypes = {
      * a custom order for your columns.
      */
     columns: PropTypes.arrayOf(PropTypes.string),
+
+    row_selectable: PropTypes.bool,
+    selected_rows: PropTypes.array,
 
     // These props are passed directly into the component
     enable_drag_and_drop: PropTypes.bool,
@@ -239,7 +289,9 @@ DataTable.defaultProps = {
     editable: true,
     filterable: false,
     sortable: true,
-    filters: {}
+    filters: {},
+    selected_rows: [],
+    row_selectable: false
 }
 
 export default DataTable;

@@ -92,6 +92,30 @@
         "returns": null
       },
       {
+        "name": "onRowsSelected",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "rows",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "onRowsDeselected",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "rows",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
         "name": "rowGetter",
         "docblock": null,
         "modifiers": [],
@@ -154,6 +178,28 @@
         },
         "required": false,
         "description": "Order of columns. Note that the column names are specified in\n`rows` but without order. This attribute allows you to specify\na custom order for your columns."
+      },
+      "row_selectable": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "",
+        "defaultValue": {
+          "value": "false",
+          "computed": false
+        }
+      },
+      "selected_rows": {
+        "type": {
+          "name": "array"
+        },
+        "required": false,
+        "description": "",
+        "defaultValue": {
+          "value": "[]",
+          "computed": false
+        }
       },
       "enable_drag_and_drop": {
         "type": {

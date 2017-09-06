@@ -1,5 +1,5 @@
 import dash
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_table_experiments as dt
@@ -34,10 +34,13 @@ app.layout = html.Div([
         # optional - sets the order of columns
         columns=sorted(DF_GAPMINDER.columns),
 
+        row_selectable=True,
         filterable=False,
         sortable=True,
+        selected_rows=[],
         id='datatable-gapminder'
     ),
+    html.Div(id='selected-indexes'),
     dcc.Graph(
         id='graph-gapminder'
     ),
@@ -54,30 +57,32 @@ app.layout = html.Div([
     ),
 ], className="container")
 
+
 @app.callback(
-    Output('graph', 'figure'),
-    [Input('datatable', 'rows')])
-def update_figure(rows):
-    dff = pd.DataFrame(rows)
-    return {
-        'data': [{
-            'x': dff['x'],
-            'y': dff['y'],
-            'text': dff['z'],
-            'type': 'bar'
-        }]
-    }
+    Output('datatable-gapminder', 'selected_rows'),
+    [Input('graph-gapminder', 'clickData')],
+    [State('datatable-gapminder', 'selected_rows')])
+def update_selected_rows(clickData, selected_rows):
+    if clickData:
+        new_points = [point['pointNumber'] for point in clickData['points']]
+    else:
+        new_points = []
+    return new_points + selected_rows
+
 
 @app.callback(
     Output('graph-gapminder', 'figure'),
-    [Input('datatable-gapminder', 'rows')])
-def update_figure(rows):
+    [Input('datatable-gapminder', 'rows'),
+     Input('datatable-gapminder', 'selected_rows')])
+def update_figure(rows, selected_rows):
     dff = pd.DataFrame(rows)
     fig = plotly.tools.make_subplots(
         rows=3, cols=1,
         subplot_titles=('Life Expectancy', 'GDP Per Capita', 'Population',),
         shared_xaxes=True)
-    marker = {'color': '#0074D9'}
+    marker = {'color': ['#0074D9']*len(dff)}
+    for i in (selected_rows or []):
+        marker['color'][i] = '#FF851B'
     fig.append_trace({
         'x': dff['country'],
         'y': dff['lifeExp'],
@@ -105,6 +110,21 @@ def update_figure(rows):
         'b': 200
     }
     return fig
+
+
+@app.callback(
+    Output('graph', 'figure'),
+    [Input('datatable', 'rows')])
+def update_figure(rows):
+    dff = pd.DataFrame(rows)
+    return {
+        'data': [{
+            'x': dff['x'],
+            'y': dff['y'],
+            'text': dff['z'],
+            'type': 'bar'
+        }]
+    }
 
 app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 
