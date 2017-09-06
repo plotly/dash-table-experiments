@@ -30,7 +30,9 @@ class DataTable extends Component {
             this.updateProps({filters: {}});
         }
 
-        newState.columns = R.keys(newState.rows[0]).map(c => ({
+        const columnNames = props.columns || R.keys(newState.rows[0]);
+
+        newState.columns = columnNames.map(c => ({
             key: c,
             name: c,
             editable: Boolean(props.editable),
@@ -190,10 +192,17 @@ class DataTable extends Component {
 }
 
 DataTable.propTypes = {
+    // These props are "custom" - defined by me.
     id: PropTypes.string,
     editable: PropTypes.bool,
     filterable: PropTypes.bool,
     sortable: PropTypes.bool,
+    /**
+     * Order of columns. Note that the column names are specified in
+     * `rows` but without order. This attribute allows you to specify
+     * a custom order for your columns.
+     */
+    columns: PropTypes.arrayOf(PropTypes.string),
 
     // These props are passed directly into the component
     enable_drag_and_drop: PropTypes.bool,

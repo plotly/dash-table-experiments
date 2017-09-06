@@ -29,6 +29,10 @@ app.layout = html.Div([
     html.H4('Gapminder DataTable'),
     dt.DataTable(
         rows=DF_GAPMINDER.to_dict('records'),
+
+        # optional - sets the order of columns
+        columns=sorted(DF_GAPMINDER.columns),
+
         filterable=False,
         sortable=True,
         id='datatable-gapminder'

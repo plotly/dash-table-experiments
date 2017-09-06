@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.2.1 - 2017-09-06
+### Added
+- A `columns` property to the `DataTable` that specifes the order of the columns
+
 ## 0.2.0 - 2017-08-24
 ### Added
 - Callbacks to the `DataTable` component

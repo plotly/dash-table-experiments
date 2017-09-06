@@ -1,15 +1,11 @@
 import React, {Component} from 'react';
 import {DataTable, EditableTable, VirtualizedTable} from '../src';
 
-const DATAFRAME = {
-    'data': [
-        [1, 3, 'Montréal'],
-        [4, 1, 'SF'],
-        [5, 8, 'New York City, United States of America']
-    ],
-    'columns': ['Column 1', 'Column 2', 'Column 3'],
-    'index': [1, 4, 8]
-}
+const ROWS = [
+    {'a': 1, 'b': 4},
+    {'a': 2, 'b': 5},
+    {'a': 3, 'b': 9}
+]
 
 class Demo extends Component {
     constructor() {
@@ -55,7 +51,7 @@ class Demo extends Component {
             <div>
 
                 <h2>DataTable</h2>
-                <DataTable dataframe={DATAFRAME} filterable={true}/>
+                <DataTable rows={ROWS} columns={['b', 'a']}/>
 
                 <h2>VirtualizedTable Component</h2>
                 <VirtualizedTable
