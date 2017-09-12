@@ -1,4 +1,12 @@
 import R from 'ramda';
+import isNumeric from 'fast-isnumeric';
+
+const FILTER_TERMS = {
+    '<': (a, b) => a < b,
+    '<=': (a, b) => a <= b,
+    '>': (a, b) => a > b,
+    '>=': (a, b) => a >= b
+}
 
 export default function filterRows(filters, rows) {
     return rows.filter(r => {
@@ -8,17 +16,31 @@ export default function filterRows(filters, rows) {
             const colFilter = filters[columnKey];
             const rowValue = r[columnKey];
 
-            /*
-             * TODO:
-             * - Options for lowercase
-             * - Options for strict equality
-             * - Numeric options: <5
-             * - and / or: (<5, ==3) && NYC
-             */
-            include = include && R.contains(
-                R.toLower(colFilter.filterTerm+''),
-                R.toLower(rowValue+'')
-            );
+            let matched = false;
+            const strFilterTerm = colFilter.filterTerm+''
+            R.keys(FILTER_TERMS).forEach(k => {
+                const replacedFilterTerm = R.replace(k, '', strFilterTerm);
+                if (!matched &&
+                    R.contains(k, strFilterTerm) &&
+                    isNumeric(replacedFilterTerm) &&
+                    isNumeric(rowValue) &&
+                    strFilterTerm !== k
+                ) {
+                    include = include && FILTER_TERMS[k](
+                        parseFloat(rowValue, 10),
+                        parseFloat(replacedFilterTerm, 10)
+                    );
+                    matched=true;
+                }
+            });
+            if (!matched &&
+                !R.contains(strFilterTerm, R.keys(FILTER_TERMS))
+            ) {
+                include = include && R.contains(
+                    R.toLower(strFilterTerm),
+                    R.toLower(rowValue+'')
+                );
+            }
         });
 
         return include;
