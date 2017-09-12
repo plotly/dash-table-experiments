@@ -13,3 +13,8 @@
     padding: 0;
     margin: 0;
 }
+
+.react-grid-Container .react-grid-HeaderCell input {
+    height: initial;
+    width: 100%;
+}
