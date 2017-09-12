@@ -109,7 +109,7 @@
         "modifiers": [],
         "params": [
           {
-            "name": "rows",
+            "name": "rowSelections",
             "type": null
           }
         ],
@@ -190,7 +190,7 @@
           "computed": false
         }
       },
-      "selected_rows": {
+      "selected_row_indices": {
         "type": {
           "name": "array"
         },

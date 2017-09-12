@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.5.0
+### Added
+- `filterable=True`, `sortable=True`, and `row_selectable=True` all work well with each other
+- `<`, `<=`, `>`, `>=` are supported as filter strings
+
+## 0.4.0
+Bad release!
+
 ## 0.3.0
 ### Added
 - 🎉 `DataTable` rows can be selected with `row_selectable=True` and by listening to the `selected_rows` property.
