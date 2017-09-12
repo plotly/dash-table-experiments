@@ -1,12 +1,23 @@
 import React, {Component, PropTypes} from 'react';
 import ReactDataGrid from 'react-data-grid';
-import {Toolbar, Data} from 'react-data-grid-addons';
+import {Toolbar} from 'react-data-grid-addons';
 import R from 'ramda';
+
+import filterRows from '../data/filter';
+import sortRows from '../data/sort';
+import filterIndices from '../data/find';
+
+const MUTABLE_PROPS = [
+    'selected_row_indices',
+    'rows',
+    'filters',
+    'sortColumn',
+    'sortDirection'
+];
 
 class DataTable extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
 
         this.getSize = this.getSize.bind(this);
         this.handleFilterChange = this.handleFilterChange.bind(this);
@@ -18,25 +29,54 @@ class DataTable extends Component {
         this.rowGetter = this.rowGetter.bind(this);
         this.updateProps = this.updateProps.bind(this);
 
-        this._originalRows = [];
+        this._absolute = {
+            rows: props.rows,
+            selected_row_objects: []
+        };
+        this._view = {
+            rows: props.rows,
+            selected_row_indices: []
+        }
+        this.state = {};
     }
 
     propsToState(props, prevProps) {
-        const newState = {
-            rows: props.rows
-        };
-        if (props.sortable) {
-            this._originalRows = props.rows;
-        }
-        if (props.filterable && !prevProps.filterable) {
-            this.updateProps({filters: {}});
-        }
-        if (props.selected_rows &&
-            props.selected_rows !== prevProps.selected_rows) {
-            newState.selected_rows = props.selected_rows;
+
+        const newState = {};
+
+        MUTABLE_PROPS.forEach(propKey => {
+            if (this.state[propKey] !== props[propKey]) {
+                // update was supplied by parent, not by this component
+                newState[propKey] = props[propKey];
+            }
+        });
+
+        if (props.rows !== prevProps.rows &&
+                this._view.rows !== props.rows) {
+            // Reset the index if supplied by dash not by component
+            this._absolute.rows = props.rows;
+
+            this._absolute.selected_row_objects = [];
+            newState.selected_row_indices = [];
         }
 
-        const columnNames = props.columns || R.keys(newState.rows[0]);
+        if (!props.filterable) {
+            this.setState({filters: {}});
+        }
+
+        if (props.selected_row_indices !== prevProps.selected_row_indices &&
+                this._view.selected_row_indices !== props.selected_row_indices) {
+            this._absolute.selected_row_objects = (
+                props.selected_row_indices.map(i => props.rows[i])
+            );
+        }
+
+        let columnNames;
+        if (newState.rows) {
+            columnNames = R.keys(newState.rows[0]);
+        } else {
+            columnNames = R.keys(this.state.rows[0]);
+        }
 
         newState.columns = columnNames.map(c => ({
             key: c,
@@ -58,10 +98,20 @@ class DataTable extends Component {
     }
 
     updateProps(obj) {
-        /* eslint-disable */
-        console.warn(`updateProps: ${JSON.stringify(obj, null, 2)}`);
-        /* eslint-enable */
-        if(this.props.setProps) {
+
+        /*
+         * Keep the state synced with the props so that
+         * we know when a change in e.g. `rows` is
+         * triggered by dash vs this component.
+         */
+
+        if (this.props.setProps) {
+            if (R.has('rows', obj)) {
+                this._view.rows = obj.rows;
+            }
+            if (R.has('selected_row_indices', obj)) {
+                this._view.selected_row_indices = obj.selected_row_indices;
+            }
             this.props.setProps(obj);
         } else {
             this.setState(obj);
@@ -73,55 +123,66 @@ class DataTable extends Component {
     }
 
     handleFilterChange(filter) {
-        const newFilters = R.merge({}, (
-            this.props.setProps ? this.props.filters : this.state.filters
-        ));
+        const newFilters = R.merge({}, this.state.filters);
         if (filter.filterTerm) {
             newFilters[filter.column.key] = filter;
         } else {
             delete newFilters[filter.column.key];
         }
 
-        this.updateProps({filters: newFilters});
+        const newRows = sortRows(
+            filterRows(
+                newFilters,
+                this._absolute.rows
+            ),
+            this.state.sortColumn,
+            this.state.sortDirection
+        );
+
+        const update = {
+            filters: newFilters,
+            rows: newRows
+        };
+
+        if (this.props.row_selectable) {
+            update.selected_row_indices = filterIndices(
+                this._absolute.selected_row_objects,
+                newRows
+            );
+        }
+
+        this.updateProps(update);
 
     }
 
     handleGridSort(sortColumn, sortDirection) {
-        const comparer = (a, b) => {
-            if (sortDirection === 'ASC') {
-                return (a[sortColumn] > b[sortColumn]) ? 1 : -1;
-            } else if (sortDirection === 'DESC') {
-                return (a[sortColumn] < b[sortColumn]) ? 1 : -1;
-            }
-        };
-
-        const rows = (sortDirection === 'NONE' ?
-            this._originalRows.slice(0) : R.sort(comparer, this.state.rows)
+        const newRows = sortRows(
+            this.state.rows,
+            sortColumn,
+            sortDirection
         );
 
         const update = {
-            rows,
+            rows: newRows,
             sortColumn,
             sortDirection
         };
 
         if (this.props.row_selectable) {
-            // Update the index of the selected rows
-            const new_selected_rows = this.state.selected_rows.map(
-                i => R.findIndex(R.equals(this.state.rows[i]), rows)
+            update.selected_row_indices = filterIndices(
+                this._absolute.selected_row_objects,
+                newRows
             );
-            update.selected_rows = new_selected_rows;
         }
 
         this.updateProps(update);
     }
 
     handleGridRowsUpdated({fromRow, toRow, updated}) {
-        const {rows} = this.state;
+        const rows = this.state.rows;
         for (let i=fromRow; i<=toRow; i++) {
             rows[i] = R.merge(rows[i], updated);
         }
-
 
         this.updateProps({
             row_update: R.append(
@@ -142,29 +203,34 @@ class DataTable extends Component {
     }
 
     getRows() {
-        if (this.props.setProps) {
-            return Data.Selectors.getRows(this.props);
-        } else {
-            return Data.Selectors.getRows(this.state);
-        }
-
+        return this.state.rows;
     }
 
     onRowsSelected(rows) {
+
+        this._absolute.selected_row_objects = R.union(
+            R.pluck('row', rows),
+            this._absolute.selected_row_objects
+        );
+
         this.updateProps({
-            selected_rows:
-            this.state.selected_rows.concat(
-                rows.map(r => r.rowIdx)
+            selected_row_indices: filterIndices(
+                this._absolute.selected_row_objects,
+                this.state.rows // only the visible rows
             )
         });
     }
 
-    onRowsDeselected(rows) {
-        let rowIndexes = rows.map(r => r.rowIdx);
+    onRowsDeselected(rowSelections) {
+        const rows = R.pluck('row', rowSelections);
+        this._absolute.selected_row_objects = R.reject(
+            R.flip(R.contains)(rows),
+            this._absolute.selected_row_objects
+        );
         this.updateProps({
-            selected_rows:
-            this.state.selected_rows.filter(
-                i => rowIndexes.indexOf(i) === -1
+            selected_row_indices: filterIndices(
+                this._absolute.selected_row_objects,
+                this.state.rows // only the visible rows
             )
         });
     }
@@ -189,7 +255,7 @@ class DataTable extends Component {
             tab_index
         } = this.props;
 
-        const {columns, selected_rows} = this.state;
+        const {columns, selected_row_indices} = this.state;
 
         const extraProps = {};
         if (sortable) {
@@ -213,7 +279,7 @@ class DataTable extends Component {
                 onRowsSelected: this.onRowsSelected,
                 onRowsDeselected: this.onRowsDeselected,
                 selectBy: {
-                    indexes: selected_rows
+                    indexes: selected_row_indices
                 }
             };
         }
@@ -233,10 +299,12 @@ class DataTable extends Component {
                 rowsCount={this.getSize()}
 
                 {...extraProps}
+
             />
         );
     }
 }
+
 
 DataTable.propTypes = {
     // These props are "custom" - defined by me.
@@ -252,7 +320,7 @@ DataTable.propTypes = {
     columns: PropTypes.arrayOf(PropTypes.string),
 
     row_selectable: PropTypes.bool,
-    selected_rows: PropTypes.array,
+    selected_row_indices: PropTypes.array,
 
     // These props are passed directly into the component
     enable_drag_and_drop: PropTypes.bool,
@@ -290,7 +358,7 @@ DataTable.defaultProps = {
     filterable: false,
     sortable: true,
     filters: {},
-    selected_rows: [],
+    selected_row_indices: [],
     row_selectable: false
 }
 
