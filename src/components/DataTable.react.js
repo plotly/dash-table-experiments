@@ -72,10 +72,14 @@ class DataTable extends Component {
         }
 
         let columnNames;
-        if (newState.rows) {
+        if (R.has('columns', props)) {
+            columnNames = props.columns;
+        } else if (R.has('rows', newState) &&
+                   newState.rows.length > 0 &&
+                   !R.has('columns', props)) {
             columnNames = R.keys(newState.rows[0]);
         } else {
-            columnNames = R.keys(this.state.rows[0]);
+            columnNames = R.pluck('name', this.state.columns);
         }
 
         newState.columns = columnNames.map(c => ({
