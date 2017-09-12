@@ -1,85 +1,38 @@
+import R from 'ramda';
 import React, {Component} from 'react';
-import {DataTable, EditableTable, VirtualizedTable} from '../src';
+import {DataTable} from '../src';
 
 const ROWS = [
-    {'a': 1, 'b': 4},
-    {'a': 2, 'b': 5},
-    {'a': 3, 'b': 9}
+    {'a': 'AA', 'b': 1},
+    {'a': 'AB', 'b': 2},
+    {'a': 'BB', 'b': 3},
+    {'a': 'BC', 'b': 4},
+    {'a': 'CC', 'b': 5},
+    {'a': 'CD', 'b': 6}
 ]
 
 class Demo extends Component {
     constructor() {
         super()
         this.state = {
-            editable: {
-                changedData: {},
-                dataframe: {
-                    'x': {
-                        '0': 1,
-                        '1': 3,
-                        '2': 5
-                    },
-                    'y': {
-                        '0': 4,
-                        '1': 3,
-                        '2': 8
-                    },
-                    'z': {
-                        '0': 'Montréal',
-                        '1': 'SF',
-                        '2': 'New York City, United States of America'
-                    }
-                }
-            },
-            virtualized: {
-                dataframe: {
-                    'data': [
-                        [1, 3, 'Montréal'],
-                        [4, 1, 'SF'],
-                        [5, 8, 'New York City, United States of America']
-                    ],
-                    'columns': ['Column 1', 'Column 2', 'Column 3'],
-                    'index': [1, 4, 8]
-                },
-                index_name: 'Index'
-            }
+            rows: ROWS,
+            columns: R.keys(ROWS[0]),
+            filterable: true,
+            sortable: true,
+            row_selectable: true
         }
     }
 
     render() {
         return (
             <div>
-
                 <h2>DataTable</h2>
-                <DataTable rows={ROWS} columns={['b', 'a']}/>
-
-                <h2>VirtualizedTable Component</h2>
-                <VirtualizedTable
-                    dataframe={this.state.virtualized.dataframe}
-                    index_name={this.state.virtualized.index_name}
-                    setProps={newProps => {
-                        this.setState({
-                            virtualized: newProps
-                        })
-                    }}
+                <button onClick={() => this.setState({rows: ROWS})}>
+                    Reset
+                </button>
+                <DataTable
+                    {...this.state}
                 />
-                <pre>
-                    {JSON.stringify(this.state.virtualized, null, 2)}
-                </pre>
-
-                <hr/>
-
-                <h2>EditableTable Component</h2>
-                <EditableTable
-                    changedData={this.state.editable.changedData}
-                    dataframe={this.state.editable.dataframe}
-                    editable={true}
-                    setProps={newProps => this.setState(newProps)}
-                />
-                <pre>
-                    {JSON.stringify(this.state.editable, null, 2)}
-                </pre>
-
             </div>
         );
     }
