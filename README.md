@@ -14,4 +14,5 @@ For updates and more, please see the [dash community discussion on tables](https
 $ pip install dash-table-experiments
 ```
 
-See [usage.py](https://github.com/plotly/dash-table-experiments/tree/master/usage.py)
+See [usage.py](https://github.com/plotly/dash-table-experiments/tree/master/usage.py) and
+See [usage-editable.py](https://github.com/plotly/dash-table-experiments/tree/master/usage-editable.py)
