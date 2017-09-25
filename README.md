@@ -10,7 +10,7 @@ Example from `usage.py`
 ![Dash DataTable](https://github.com/plotly/dash-table-experiments/raw/master/images/DataTable.gif)
 
 Example from `usage-editable.py`
-![Editable Dash DataTable](https://github.com/plotly/dash-table-experiments/raw/master/images/DataTable-Editable.gif)
+![Editable Dash DataTable](https://github.com/plotly/dash-table-experiments/raw/master/images/Editable-DataTable.gif)
 
 
 ## Usage
