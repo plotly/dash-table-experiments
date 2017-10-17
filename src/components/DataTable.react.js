@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import ReactDataGrid from 'react-data-grid';
+import ReactDataGrid, {Row} from 'react-data-grid';
 import {Toolbar} from 'react-data-grid-addons';
 import R from 'ramda';
 
@@ -87,7 +87,16 @@ class DataTable extends Component {
             name: c,
             editable: Boolean(props.editable),
             sortable: Boolean(props.sortable),
-            filterable: Boolean(props.filterable)
+            filterable: Boolean(props.filterable),
+            formatter: cellProps => {
+                /* eslint-disable */
+                console.warn(cellProps);
+                /* eslint-enable */
+                return (R.type(cellProps.value) === 'Object' ?
+                    props.render(cellProps.value) :
+                    <div>{cellProps.value}</div>
+                );
+            }
         }));
 
         this.setState(newState);
@@ -301,6 +310,14 @@ class DataTable extends Component {
                 columns={columns}
                 rowGetter={this.rowGetter}
                 rowsCount={this.getSize()}
+
+                rowRenderer={props => {
+                    /* eslint-disable */
+                    console.warn(props);
+                    /* eslint-enable */
+                    props.height = props.idx === 0 ? 100 : props.height;
+                    return (<Row {...props}/>);
+                }}
 
                 {...extraProps}
 

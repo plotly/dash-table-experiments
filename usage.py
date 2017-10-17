@@ -9,6 +9,7 @@ import numpy as np
 import plotly
 
 app = dash.Dash()
+server = app.server
 
 app.scripts.config.serve_locally = True
 # app.css.config.serve_locally = True
