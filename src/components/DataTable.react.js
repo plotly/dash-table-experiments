@@ -211,32 +211,46 @@ class DataTable extends Component {
     }
 
     onRowsSelected(rows) {
-
-        this._absolute.selected_row_objects = R.union(
-            R.pluck('row', rows),
-            this._absolute.selected_row_objects
-        );
-
-        this.updateProps({
-            selected_row_indices: filterIndices(
-                this._absolute.selected_row_objects,
-                this.state.rows // only the visible rows
-            )
-        });
+        const selected_rows = R.pluck('row', rows);
+        if (selected_rows.length == this.getSize()) {
+            this._absolute.selected_row_objects = selected_rows;
+            this.updateProps({
+                selected_row_indices: R.range(0, this.getSize())
+            });
+        } else {
+            this._absolute.selected_row_objects = R.union(
+                selected_rows,
+                this._absolute.selected_row_objects
+            );
+    
+            this.updateProps({
+                selected_row_indices: filterIndices(
+                    this._absolute.selected_row_objects,
+                    this.state.rows // only the visible rows
+                )
+            });
+        }
     }
 
     onRowsDeselected(rowSelections) {
         const rows = R.pluck('row', rowSelections);
-        this._absolute.selected_row_objects = R.reject(
-            R.flip(R.contains)(rows),
-            this._absolute.selected_row_objects
-        );
-        this.updateProps({
-            selected_row_indices: filterIndices(
-                this._absolute.selected_row_objects,
-                this.state.rows // only the visible rows
-            )
-        });
+        if (rows.length == this.getSize()) {
+            this._absolute.selected_row_objects = R.empty(rows);
+            this.updateProps({
+                selected_row_indices: []
+            });
+        } else {
+            this._absolute.selected_row_objects = R.reject(
+                R.flip(R.contains)(rows),
+                this._absolute.selected_row_objects
+            );
+            this.updateProps({
+                selected_row_indices: filterIndices(
+                    this._absolute.selected_row_objects,
+                    this.state.rows // only the visible rows
+                )
+            });
+        }
     }
 
     rowGetter(rowIdx) {
