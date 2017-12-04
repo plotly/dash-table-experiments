@@ -19,5 +19,32 @@ Example from `usage-editable.py`
 $ pip install dash-table-experiments
 ```
 
+### Usage with Callbacks
+Per [this Dash community answer](https://community.plot.ly/t/dash-datatable-using-callbacks/6756/2), to use callbacks with `dash-table-experiments`:
+
+```
+
+# declare the table in app.layout
+dt.DataTable(
+    rows=[{}], # initialise the rows
+    row_selectable=True,
+    filterable=True,
+    sortable=True,
+    selected_row_indices=[],
+    id='datatable'
+)
+
+# update rows in a callback
+@app.callback(Output('datatable', 'rows'), [Input('field-dropdown', 'value')])
+def update_datatable(user_selection):
+    '''
+    For user selections, return the relevant table
+    '''
+    if user_selection == 'Summary':
+        return DATA.to_dict('records')
+    else:
+        return SOMEOTHERDATA.to_dict('records')
+```
+
 See [usage.py](https://github.com/plotly/dash-table-experiments/tree/master/usage.py) and
 See [usage-editable.py](https://github.com/plotly/dash-table-experiments/tree/master/usage-editable.py)
