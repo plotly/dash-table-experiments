@@ -20,11 +20,10 @@ $ pip install dash-table-experiments
 ```
 
 ### Usage with Callbacks
-Per [this Dash community answer](https://community.plot.ly/t/dash-datatable-using-callbacks/6756/2), to use callbacks with `dash-table-experiments`:
+Per [this Dash community answer](https://community.plot.ly/t/dash-datatable-using-callbacks/6756/2), to use callbacks with `dash-table-experiments` there are two key steps (for a full working example see [usage-callback.py](./usage-callback.py)):
 
 ```
-
-# declare the table in app.layout
+# 1. Declare the table in app.layout
 dt.DataTable(
     rows=[{}], # initialise the rows
     row_selectable=True,
@@ -34,7 +33,7 @@ dt.DataTable(
     id='datatable'
 )
 
-# update rows in a callback
+# 2. Update rows in a callback
 @app.callback(Output('datatable', 'rows'), [Input('field-dropdown', 'value')])
 def update_datatable(user_selection):
     '''
