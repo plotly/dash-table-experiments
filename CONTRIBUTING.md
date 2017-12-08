@@ -19,6 +19,11 @@ $ npm install
 $ npm run prepublish # generates the bundle.js file and a metadata.json
 ```
 
+I personally use the file watcher `entr` in combination with the file searcher `ag` to do live-reloading:
+```
+$ ag -l --js | entr npm run prepublish
+```
+
 4. Run an example locally
 To use the local assets instead of the ones on unpkg.com, you will need to set
 ```
