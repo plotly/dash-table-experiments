@@ -210,6 +210,13 @@ class DataTable extends Component {
         return this.state.rows;
     }
 
+    getMinHeight() {
+        if (this.getSize() < 10) {
+            return (this.getSize() * 35) + 35 + 15; // 35px extra edded for the filter box and 15px added for padding
+        }
+        return (typeof DataTable.defaultProps.min_height != 'undefined') ? DataTable.defaultProps.min_height : 350;
+    }
+
     onRowsSelected(rows) {
 
         this._absolute.selected_row_objects = R.union(
@@ -250,7 +257,6 @@ class DataTable extends Component {
             enable_drag_and_drop,
             filterable,
             header_row_height,
-            min_height,
             min_width,
             row_height,
             row_scroll_timeout,
@@ -292,7 +298,7 @@ class DataTable extends Component {
             <ReactDataGrid
                 enableDragAndDrop={enable_drag_and_drop}
                 headerRowHeight={header_row_height}
-                minHeight={min_height}
+                minHeight={this.getMinHeight()}
                 minWidth={min_width}
                 row_height={row_height}
                 row_scroll_timeout={row_scroll_timeout}
