@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.5.1
+`datatable` now automatically resizes to fit data that has less than 10 rows.
+
 ## 0.5.0
 ### Added
 - `filterable=True`, `sortable=True`, and `row_selectable=True` all work well with each other
