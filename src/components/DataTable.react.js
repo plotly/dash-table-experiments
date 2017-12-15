@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import ReactDataGrid, {Row} from 'react-data-grid';
+import ReactDataGrid, {Cell, Row} from 'react-data-grid';
 import {Toolbar} from 'react-data-grid-addons';
 import R from 'ramda';
 
@@ -88,9 +88,10 @@ class DataTable extends Component {
             editable: Boolean(props.editable),
             sortable: Boolean(props.sortable),
             filterable: Boolean(props.filterable),
+            width: props.column_width,
             formatter: cellProps => {
                 /* eslint-disable */
-                console.warn(cellProps);
+                // console.warn(cellProps);
                 /* eslint-enable */
                 return (R.type(cellProps.value) === 'Object' ?
                     props.render(cellProps.value) :
@@ -303,7 +304,7 @@ class DataTable extends Component {
                 headerRowHeight={header_row_height}
                 minHeight={min_height}
                 minWidth={min_width}
-                row_height={row_height}
+                rowHeight={row_height}
                 row_scroll_timeout={row_scroll_timeout}
                 tab_index={tab_index}
 
@@ -313,10 +314,19 @@ class DataTable extends Component {
 
                 rowRenderer={props => {
                     /* eslint-disable */
-                    console.warn(props);
+                    console.warn('rowProps', props);
                     /* eslint-enable */
-                    props.height = props.idx === 0 ? 100 : props.height;
-                    return (<Row {...props}/>);
+                    return (
+                        <Row
+                            cellRenderer={(cellProps) => {
+                                /* eslint-disable */
+                                console.warn('cellProps', cellProps);
+                                /* eslint-enable */
+                                cellProps.children = this.props.render(cellProps.value);
+                                return <Cell {...cellProps}/>
+                            }}
+                            {...props}
+                        />);
                 }}
 
                 {...extraProps}
@@ -355,6 +365,9 @@ DataTable.propTypes = {
     //     rows_start: PropTypes.number,
     //     rows_end: PropTypes.number
     // }),
+    column_width: PropTypes.number, // TODO or null?
+    // TODO - column properties for each column
+    // TODO - column_style?
     row_height: PropTypes.number,
     row_scroll_timeout: PropTypes.number,
     tab_index: PropTypes.number,
@@ -380,7 +393,8 @@ DataTable.defaultProps = {
     sortable: true,
     filters: {},
     selected_row_indices: [],
-    row_selectable: false
+    row_selectable: false,
+    column_width: null
 }
 
 export default DataTable;

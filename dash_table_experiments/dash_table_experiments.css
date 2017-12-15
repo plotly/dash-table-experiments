@@ -1,3 +1,8 @@
+.react-grid-Cell {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
 .react-grid-Container {
     box-sizing: border-box;
     -webkit-box-sizing: border-box;

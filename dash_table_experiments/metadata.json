@@ -229,6 +229,17 @@
         "required": false,
         "description": ""
       },
+      "column_width": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": "",
+        "defaultValue": {
+          "value": "null",
+          "computed": false
+        }
+      },
       "row_height": {
         "type": {
           "name": "number"
