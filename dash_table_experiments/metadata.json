@@ -1,6 +1,7 @@
 {
   "src/components/DataTable.react.js": {
     "description": "",
+    "displayName": "DataTable",
     "methods": [
       {
         "name": "propsToState",
@@ -86,6 +87,13 @@
       },
       {
         "name": "getRows",
+        "docblock": null,
+        "modifiers": [],
+        "params": [],
+        "returns": null
+      },
+      {
+        "name": "getMinHeight",
         "docblock": null,
         "modifiers": [],
         "params": [],
@@ -322,6 +330,7 @@
   },
   "src/components/EditableTable.react.js": {
     "description": "",
+    "displayName": "EditableTable",
     "methods": [],
     "props": {
       "id": {
@@ -431,6 +440,7 @@
   },
   "src/components/VirtualizedTable.react.js": {
     "description": "",
+    "displayName": "VirtualizedTable",
     "methods": [
       {
         "name": "cellRenderer",

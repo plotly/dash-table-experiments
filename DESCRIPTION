@@ -1,0 +1,16 @@
+Package: dashTable
+Title: An experimental dasher table component
+Version: 0.0.1
+Authors@R: c(
+  person(family = "plotly", role = c("aut", "cre"), email = "chris@plot.ly"),
+  person("Carson", "Sievert", role = "aut"))
+Description: An experimental dasher table component 
+Suggests: 
+	testthat,
+	roxygen2
+License: MIT + file LICENSE
+URL: https://github.com/plotly/dash-table-experiments
+BugReports: https://github.com/plotly/dash-table-experiments/issues
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1

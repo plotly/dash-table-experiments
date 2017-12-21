@@ -16,15 +16,18 @@
     "copy-lib": "cp lib/* dash_table_experiments",
     "demo": "builder run demo",
     "install-local": "npm run copy-lib && python setup.py install",
+    "install-local-r": "npm run copy-lib && Rscript inst/transpile.R && Rscript -e 'roxygen2::roxygenise()' && R CMD install .",
     "prepublish": "npm test && builder run build-dist && npm run copy-lib",
     "build-local": "builder run build-dist && npm run copy-lib",
     "publish-all": "npm publish && python setup.py sdist upload",
     "publish-pypi": "npm run prepublish && python setup.py sdist upload",
+    "publish-cran": "npm run prepublish &&  Rscript -e 'devtools::release()'",
     "start": "builder run build-dev",
     "test": "builder run check",
     "test-watch": "builder run test-frontend-watch",
     "test-debug": "builder run test-frontend-debug",
-    "uninstall-local": "pip uninstall dash-table-experiments -y"
+    "uninstall-local": "pip uninstall dash-table-experiments -y",
+    "uninstall-local-r": "Rscript -e \"utils::remove.packages(read.dcf('DESCRIPTION')[, 'Package'])\""
   },
   "dependencies": {
     "builder": "3.2.2",

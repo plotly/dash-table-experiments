@@ -12,3 +12,4 @@ venv/
 *.egg-info
 *.log
 .DS_Store
+.Rproj.user
