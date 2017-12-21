@@ -13,3 +13,4 @@ venv/
 *.log
 .DS_Store
 .Rproj.user
+.Rhistory
