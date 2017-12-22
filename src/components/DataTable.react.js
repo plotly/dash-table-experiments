@@ -89,6 +89,11 @@ class DataTable extends Component {
             sortable: Boolean(props.sortable),
             filterable: Boolean(props.filterable)
         }));
+        if (props.column_widths) {
+            newState.columns.forEach((c, i) => {
+                c.width = props.column_widths[i];
+            });
+        }
 
         this.setState(newState);
     }
@@ -322,6 +327,8 @@ DataTable.propTypes = {
     editable: PropTypes.bool,
     filterable: PropTypes.bool,
     sortable: PropTypes.bool,
+    column_widths: PropTypes.arrayOf(PropTypes.number),
+
     /**
      * Order of columns. Note that the column names are specified in
      * `rows` but without order. This attribute allows you to specify

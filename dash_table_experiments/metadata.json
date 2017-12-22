@@ -92,6 +92,13 @@
         "returns": null
       },
       {
+        "name": "getMinHeight",
+        "docblock": null,
+        "modifiers": [],
+        "params": [],
+        "returns": null
+      },
+      {
         "name": "onRowsSelected",
         "docblock": null,
         "modifiers": [],
@@ -168,6 +175,16 @@
           "value": "true",
           "computed": false
         }
+      },
+      "column_widths": {
+        "type": {
+          "name": "arrayOf",
+          "value": {
+            "name": "number"
+          }
+        },
+        "required": false,
+        "description": ""
       },
       "columns": {
         "type": {
