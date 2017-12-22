@@ -2,9 +2,8 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## 0.5.1
+## 0.5.2
 ### Added
-- `DataTable` now automatically resizes to fit data that has less than 10 rows.
 - A `column_widths` property can be used to set the column widths of the
 `DataTable`. Simple example:
 ```python
@@ -19,6 +18,10 @@ dt.DataTable(
     column_widths=[200, 400]
 )
 ```
+
+## 0.5.1
+### Added
+- `DataTable` now automatically resizes to fit data that has less than 10 rows.
 
 ## 0.5.0
 ### Added
