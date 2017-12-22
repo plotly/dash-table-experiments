@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.5.3
+### Added
+- A `resizable` property on the `DataTable` component. If `True`, then the columns
+can be resized by clicking and dragging on the border on the edge of the column
+header. If `False`, they cannot be resized. By default, columns are resizable.
+
 ## 0.5.2
 ### Added
 - A `column_widths` property can be used to set the column widths of the
