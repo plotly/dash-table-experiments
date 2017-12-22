@@ -87,8 +87,14 @@ class DataTable extends Component {
             name: c,
             editable: Boolean(props.editable),
             sortable: Boolean(props.sortable),
+            resizable: Boolean(props.resizable),
             filterable: Boolean(props.filterable)
         }));
+        if (props.column_widths) {
+            newState.columns.forEach((c, i) => {
+                c.width = props.column_widths[i];
+            });
+        }
 
         this.setState(newState);
     }
@@ -319,9 +325,42 @@ class DataTable extends Component {
 DataTable.propTypes = {
     // These props are "custom" - defined by me.
     id: PropTypes.string,
+
+    /**
+     * Are the cells in the table editable?
+     * If `True`, you can listen to `rows` or `row_update` to
+     * get the updated data.
+     */
     editable: PropTypes.bool,
+
+    /**
+     * Should the filtering UI in the Table appear?
+     * If `True`, you can listen to `rows` or `row_update` to
+     * get the updated data.
+     */
     filterable: PropTypes.bool,
+
+    /**
+     * Is the table sortable? If `True`, click on the column headers
+     * to sort by that column.
+     * If `True`, you can listen to `rows` or `row_update` to
+     * get the updated data.
+     */
     sortable: PropTypes.bool,
+
+    /**
+     * Are the columns resizble?
+     * If `True`, then the columns can be resized by clicking and
+     * dragging on the border on the edge of the column
+     * header. If `False`, they cannot be resized.
+     */
+    resizable: PropTypes.bool,
+
+    /**
+     * Column widths (in pixels) of each column
+     */
+    column_widths: PropTypes.arrayOf(PropTypes.number),
+
     /**
      * Order of columns. Note that the column names are specified in
      * `rows` but without order. This attribute allows you to specify
@@ -367,6 +406,7 @@ DataTable.defaultProps = {
     editable: true,
     filterable: false,
     sortable: true,
+    resizable: true,
     filters: {},
     selected_row_indices: [],
     row_selectable: false

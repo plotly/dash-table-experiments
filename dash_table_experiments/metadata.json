@@ -149,7 +149,7 @@
           "name": "bool"
         },
         "required": false,
-        "description": "",
+        "description": "Are the cells in the table editable?\nIf `True`, you can listen to `rows` or `row_update` to\nget the updated data.",
         "defaultValue": {
           "value": "true",
           "computed": false
@@ -160,7 +160,7 @@
           "name": "bool"
         },
         "required": false,
-        "description": "",
+        "description": "Should the filtering UI in the Table appear?\nIf `True`, you can listen to `rows` or `row_update` to\nget the updated data.",
         "defaultValue": {
           "value": "false",
           "computed": false
@@ -171,11 +171,32 @@
           "name": "bool"
         },
         "required": false,
-        "description": "",
+        "description": "Is the table sortable? If `True`, click on the column headers\nto sort by that column.\nIf `True`, you can listen to `rows` or `row_update` to\nget the updated data.",
         "defaultValue": {
           "value": "true",
           "computed": false
         }
+      },
+      "resizable": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "Are the columns resizble?\nIf `True`, then the columns can be resized by clicking and\ndragging on the border on the edge of the column\nheader. If `False`, they cannot be resized.",
+        "defaultValue": {
+          "value": "true",
+          "computed": false
+        }
+      },
+      "column_widths": {
+        "type": {
+          "name": "arrayOf",
+          "value": {
+            "name": "number"
+          }
+        },
+        "required": false,
+        "description": "Column widths (in pixels) of each column"
       },
       "columns": {
         "type": {
