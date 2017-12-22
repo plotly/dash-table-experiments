@@ -5,21 +5,26 @@
 \title{DataTable dash-table-experiments component}
 \usage{
 DataTable(id = NULL, editable = TRUE, filterable = FALSE,
-  sortable = TRUE, columns = NULL, row_selectable = FALSE,
-  selected_row_indices = list(), enable_drag_and_drop = NULL,
-  header_row_height = NULL, min_height = NULL, min_width = NULL,
-  row_height = NULL, row_scroll_timeout = NULL, tab_index = NULL,
-  filters = list(), rows = NULL, row_update = NULL, sortColumn = NULL,
+  sortable = TRUE, resizable = TRUE, column_widths = NULL,
+  columns = NULL, row_selectable = FALSE, selected_row_indices = list(),
+  enable_drag_and_drop = NULL, header_row_height = NULL,
+  min_height = NULL, min_width = NULL, row_height = NULL,
+  row_scroll_timeout = NULL, tab_index = NULL, filters = list(),
+  rows = NULL, row_update = NULL, sortColumn = NULL,
   sortDirection = NULL, setProps = NULL)
 }
 \arguments{
 \item{id}{}
 
-\item{editable}{}
+\item{editable}{Are the cells in the table editable? If `True`, you can listen to `rows` or `row_update` to get the updated data.}
 
-\item{filterable}{}
+\item{filterable}{Should the filtering UI in the Table appear? If `True`, you can listen to `rows` or `row_update` to get the updated data.}
 
-\item{sortable}{}
+\item{sortable}{Is the table sortable? If `True`, click on the column headers to sort by that column. If `True`, you can listen to `rows` or `row_update` to get the updated data.}
+
+\item{resizable}{Are the columns resizble? If `True`, then the columns can be resized by clicking and dragging on the border on the edge of the column header. If `False`, they cannot be resized.}
+
+\item{column_widths}{Column widths (in pixels) of each column}
 
 \item{columns}{Order of columns. Note that the column names are specified in `rows` but without order. This attribute allows you to specify a custom order for your columns.}
 

@@ -4,9 +4,11 @@
 #' @description 
 #' @export
 #' @param id  
-#' @param editable  
-#' @param filterable  
-#' @param sortable  
+#' @param editable Are the cells in the table editable? If `True`, you can listen to `rows` or `row_update` to get the updated data. 
+#' @param filterable Should the filtering UI in the Table appear? If `True`, you can listen to `rows` or `row_update` to get the updated data. 
+#' @param sortable Is the table sortable? If `True`, click on the column headers to sort by that column. If `True`, you can listen to `rows` or `row_update` to get the updated data. 
+#' @param resizable Are the columns resizble? If `True`, then the columns can be resized by clicking and dragging on the border on the edge of the column header. If `False`, they cannot be resized. 
+#' @param column_widths Column widths (in pixels) of each column 
 #' @param columns Order of columns. Note that the column names are specified in `rows` but without order. This attribute allows you to specify a custom order for your columns. 
 #' @param row_selectable  
 #' @param selected_row_indices  
@@ -24,7 +26,7 @@
 #' @param sortDirection  
 #' @param setProps  
 
-DataTable <- function(id = NULL, editable = TRUE, filterable = FALSE, sortable = TRUE, columns = NULL, row_selectable = FALSE, selected_row_indices = list(), enable_drag_and_drop = NULL, header_row_height = NULL, min_height = NULL, min_width = NULL, row_height = NULL, row_scroll_timeout = NULL, tab_index = NULL, filters = list(), rows = NULL, row_update = NULL, sortColumn = NULL, sortDirection = NULL, setProps = NULL) {
+DataTable <- function(id = NULL, editable = TRUE, filterable = FALSE, sortable = TRUE, resizable = TRUE, column_widths = NULL, columns = NULL, row_selectable = FALSE, selected_row_indices = list(), enable_drag_and_drop = NULL, header_row_height = NULL, min_height = NULL, min_width = NULL, row_height = NULL, row_scroll_timeout = NULL, tab_index = NULL, filters = list(), rows = NULL, row_update = NULL, sortColumn = NULL, sortDirection = NULL, setProps = NULL) {
 
 component <- list(
   props = list(
@@ -32,6 +34,8 @@ component <- list(
 				editable=editable, 
 				filterable=filterable, 
 				sortable=sortable, 
+				resizable=resizable, 
+				column_widths=column_widths, 
 				columns=columns, 
 				row_selectable=row_selectable, 
 				selected_row_indices=selected_row_indices, 
@@ -51,7 +55,7 @@ component <- list(
   ),
   type = 'DataTable',
   namespace = 'dash_table_experiments',
-  propNames = c('id', 'editable', 'filterable', 'sortable', 'columns', 'row_selectable', 'selected_row_indices', 'enable_drag_and_drop', 'header_row_height', 'min_height', 'min_width', 'row_height', 'row_scroll_timeout', 'tab_index', 'filters', 'rows', 'row_update', 'sortColumn', 'sortDirection', 'setProps'),
+  propNames = c('id', 'editable', 'filterable', 'sortable', 'resizable', 'column_widths', 'columns', 'row_selectable', 'selected_row_indices', 'enable_drag_and_drop', 'header_row_height', 'min_height', 'min_width', 'row_height', 'row_scroll_timeout', 'tab_index', 'filters', 'rows', 'row_update', 'sortColumn', 'sortDirection', 'setProps'),
   package = 'dashTable'
 )
 
