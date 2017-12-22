@@ -325,8 +325,27 @@ class DataTable extends Component {
 DataTable.propTypes = {
     // These props are "custom" - defined by me.
     id: PropTypes.string,
+
+    /**
+     * Are the cells in the table editable?
+     * If `True`, you can listen to `rows` or `row_update` to
+     * get the updated data.
+     */
     editable: PropTypes.bool,
+
+    /**
+     * Should the filtering UI in the Table appear?
+     * If `True`, you can listen to `rows` or `row_update` to
+     * get the updated data.
+     */
     filterable: PropTypes.bool,
+
+    /**
+     * Is the table sortable? If `True`, click on the column headers
+     * to sort by that column.
+     * If `True`, you can listen to `rows` or `row_update` to
+     * get the updated data.
+     */
     sortable: PropTypes.bool,
 
     /**
@@ -336,6 +355,10 @@ DataTable.propTypes = {
      * header. If `False`, they cannot be resized.
      */
     resizable: PropTypes.bool,
+
+    /**
+     * Column widths (in pixels) of each column
+     */
     column_widths: PropTypes.arrayOf(PropTypes.number),
 
     /**
