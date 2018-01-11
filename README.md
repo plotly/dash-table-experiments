@@ -6,6 +6,8 @@ The Dash Table component will likely be merged into the [`dash-core-components`]
 
 For updates and more, please see the [dash community discussion on tables](https://community.plot.ly/t/display-tables-in-dash/4707/36).
 
+If your organization or company is interested in sponsoring enhancements to this project, [please reach out](https://plot.ly/dash/pricing).
+
 Example from `usage.py`
 ![Dash DataTable](https://github.com/plotly/dash-table-experiments/raw/master/images/DataTable.gif)
 
