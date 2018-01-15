@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## 0.5.4
+### Fixed
+- Fixed an issue with `min_height` regarding the `DataTable` under 10 rows
+- Fixed an issues with `filter` bar under 2 rows
+
 ## 0.5.3
 ### Added
 - A `resizable` property on the `DataTable` component. If `True`, then the columns
