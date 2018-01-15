@@ -217,8 +217,12 @@ class DataTable extends Component {
     }
 
     getMinHeight() {
-        if (this.getSize() < 10) {
-            return (this.getSize() * 35) + 35 + 15; // 35px extra edded for the filter box and 15px added for padding
+        if (typeof DataTable.defaultProps.min_height === 'undefined' && this.getSize() < 10) {
+            var filter_box_space = 0
+            if (this.props.filterable && this.getSize() < 2) {
+                filter_box_space = 45
+            }
+            return (this.getSize() * 35) + 35 + filter_box_space + 15;
         }
         return (typeof DataTable.defaultProps.min_height !== 'undefined') ? DataTable.defaultProps.min_height : 350;
     }
