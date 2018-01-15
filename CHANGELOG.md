@@ -5,8 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 0.5.4
 ### Fixed
-- Fixed an issue with `min_height` regarding the `DataTable` under 10 rows
-- Fixed an issues with `filter` bar under 2 rows
+- Fixed issue with `min_height` regarding the `DataTable` under 10 rows.
+- Fixed issue with `filter` bar under 2 rows. Before, if there was only one row of data and the user clicked on 'Filter' the data would disappear. To improve the UI, if there is only one row additional height is added to the table div element so the user can still see the data if the 'Filter' button is selected.
 
 ## 0.5.3
 ### Added
