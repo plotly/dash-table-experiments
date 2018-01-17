@@ -1,10 +1,11 @@
 from setuptools import setup
 
-exec (open('dash_table_experiments/version.py').read())
+main_ns = {}
+exec(open('dash_table_experiments/version.py').read(), main_ns)
 
 setup(
     name='dash_table_experiments',
-    version=__version__,
+    version=main_ns['__version__'],
     author='plotly',
     packages=['dash_table_experiments'],
     include_package_data=True,
