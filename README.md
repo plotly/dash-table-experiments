@@ -39,9 +39,9 @@ dt.DataTable(
 # 2. Update rows in a callback
 @app.callback(Output('datatable', 'rows'), [Input('field-dropdown', 'value')])
 def update_datatable(user_selection):
-    '''
+    """
     For user selections, return the relevant table
-    '''
+    """
     if user_selection == 'Summary':
         return DATA.to_dict('records')
     else:
