@@ -217,14 +217,18 @@ class DataTable extends Component {
     }
 
     getMinHeight() {
-        if (typeof DataTable.defaultProps.min_height === 'undefined' && this.getSize() < 10) {
-            var filter_box_space = 0
+        if (R.type(DataTable.defaultProps.min_height) === 'Undefined' &&
+                this.getSize() < 10) {
+            let filter_box_space = 0;
             if (this.props.filterable && this.getSize() < 2) {
-                filter_box_space = 45
+                filter_box_space = 45;
             }
             return (this.getSize() * 35) + 35 + filter_box_space + 15;
         }
-        return (typeof DataTable.defaultProps.min_height !== 'undefined') ? DataTable.defaultProps.min_height : 350;
+        return (
+            (R.type(DataTable.defaultProps.min_height) !== 'Undefined') ?
+            DataTable.defaultProps.min_height : 350
+        );
     }
 
     onRowsSelected(rows) {
