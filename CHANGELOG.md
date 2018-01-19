@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.5.5
+### Fixed
+- Fixed existing filter strings not resetting when a Dash callback changes the dataset displayed in the dash-table.
 
 ## 0.5.4
 ### Fixed
