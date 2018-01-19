@@ -105,6 +105,9 @@ class DataTable extends Component {
 
     componentWillReceiveProps(nextProps) {
         this.propsToState(nextProps, this.props);
+        if (this.grid.state.canFilter) {
+            this.grid.onToggleFilter();
+        }
     }
 
     updateProps(obj) {
@@ -306,6 +309,7 @@ class DataTable extends Component {
 
         return  (
             <ReactDataGrid
+                ref={(grid) => { this.grid = grid; }}
                 enableDragAndDrop={enable_drag_and_drop}
                 headerRowHeight={header_row_height}
                 minHeight={this.getMinHeight()}
