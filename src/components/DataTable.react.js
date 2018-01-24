@@ -21,6 +21,7 @@ class DataTable extends Component {
 
         this.getSize = this.getSize.bind(this);
         this.handleFilterChange = this.handleFilterChange.bind(this);
+        this.onClearFilters = this.onClearFilters.bind(this);
         this.handleGridRowsUpdated = this.handleGridRowsUpdated.bind(this);
         this.handleGridSort = this.handleGridSort.bind(this);
         this.onRowsDeselected = this.onRowsDeselected.bind(this);
@@ -132,7 +133,21 @@ class DataTable extends Component {
     }
 
     onClearFilters() {
-        this.updateProps({filters: {}});
+        const emptyFilters = R.merge({}, {});
+        const newRows = sortRows(
+            filterRows(
+                emptyFilters,
+                this._absolute.rows
+            ),
+            this.state.sortColumn,
+            this.state.sortDirection
+        );
+
+        const update = {
+            filters: emptyFilters,
+            rows: newRows
+        };
+        this.updateProps(update);
     }
 
     handleFilterChange(filter) {
