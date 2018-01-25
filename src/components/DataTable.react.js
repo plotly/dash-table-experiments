@@ -235,7 +235,7 @@ class DataTable extends Component {
     }
 
     getMinHeight() {
-        if (R.type(DataTable.defaultProps.min_height) === 'Undefined' &&
+        if (R.type(this.props.min_height) === 'Undefined' &&
                 this.getSize() < 10) {
             let filter_box_space = 0;
             if (this.props.filterable && this.getSize() < 2) {
@@ -244,8 +244,8 @@ class DataTable extends Component {
             return (this.getSize() * 35) + 35 + filter_box_space + 15;
         }
         return (
-            (R.type(DataTable.defaultProps.min_height) !== 'Undefined') ?
-            DataTable.defaultProps.min_height : 350
+            (R.type(this.props.min_height) !== 'Undefined') ?
+            this.props.min_height : 350
         );
     }
 
