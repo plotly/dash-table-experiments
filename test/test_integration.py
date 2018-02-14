@@ -166,11 +166,14 @@ class Tests(IntegrationTests):
         @app.callback(Output('dt', 'rows'),
                       [Input('button', 'n_clicks')])
         def update_rows(n_clicks):
-            return ROWS
+            if n_clicks > 0:
+                return ROWS
+            else:
+                return [{}]
 
         self.startServer(app)
 
         self.snapshot('test_update_rows_from_callback-1')
         self.wait_for_element_by_css_selector('#button').click()
-        time.sleep(2)
+        time.sleep(5)
         self.snapshot('test_update_rows_from_callback-2')
