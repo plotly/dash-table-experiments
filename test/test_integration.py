@@ -148,3 +148,29 @@ class Tests(IntegrationTests):
         self.wait_for_element_by_css_selector('#waitfor')
         self.snapshot('gallery')
         assert_clean_console(self)
+
+    def test_update_rows_from_callback(self):
+        app = dash.Dash()
+        app.layout = html.Div([
+            html.Button(
+                children='load',
+                id='button',
+                n_clicks=0
+            ),
+            dt.DataTable(
+                id='dt',
+                rows=[{}]
+            )
+        ])
+
+        @app.callback(Output('dt', 'rows'),
+                      [Input('button', 'n_clicks')])
+        def update_rows(n_clicks):
+            return ROWS
+
+        self.startServer(app)
+
+        self.snapshot('test_update_rows_from_callback-1')
+        self.wait_for_element_by_css_selector('#button').click()
+        time.sleep(2)
+        self.snapshot('test_update_rows_from_callback-2')
