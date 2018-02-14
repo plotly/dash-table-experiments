@@ -21,6 +21,7 @@ class DataTable extends Component {
 
         this.getSize = this.getSize.bind(this);
         this.handleFilterChange = this.handleFilterChange.bind(this);
+        this.onClearFilters = this.onClearFilters.bind(this);
         this.handleGridRowsUpdated = this.handleGridRowsUpdated.bind(this);
         this.handleGridSort = this.handleGridSort.bind(this);
         this.onRowsDeselected = this.onRowsDeselected.bind(this);
@@ -105,6 +106,9 @@ class DataTable extends Component {
 
     componentWillReceiveProps(nextProps) {
         this.propsToState(nextProps, this.props);
+        if (this.grid.state.canFilter) {
+            this.grid.onToggleFilter();
+        }
     }
 
     updateProps(obj) {
@@ -129,7 +133,21 @@ class DataTable extends Component {
     }
 
     onClearFilters() {
-        this.updateProps({filters: {}});
+        const emptyFilters = R.merge({}, {});
+        const newRows = sortRows(
+            filterRows(
+                emptyFilters,
+                this._absolute.rows
+            ),
+            this.state.sortColumn,
+            this.state.sortDirection
+        );
+
+        const update = {
+            filters: emptyFilters,
+            rows: newRows
+        };
+        this.updateProps(update);
     }
 
     handleFilterChange(filter) {
@@ -217,7 +235,7 @@ class DataTable extends Component {
     }
 
     getMinHeight() {
-        if (R.type(DataTable.defaultProps.min_height) === 'Undefined' &&
+        if (R.type(this.props.min_height) === 'Undefined' &&
                 this.getSize() < 10) {
             let filter_box_space = 0;
             if (this.props.filterable && this.getSize() < 2) {
@@ -226,8 +244,8 @@ class DataTable extends Component {
             return (this.getSize() * 35) + 35 + filter_box_space + 15;
         }
         return (
-            (R.type(DataTable.defaultProps.min_height) !== 'Undefined') ?
-            DataTable.defaultProps.min_height : 350
+            (R.type(this.props.min_height) !== 'Undefined') ?
+            this.props.min_height : 350
         );
     }
 
@@ -310,6 +328,7 @@ class DataTable extends Component {
 
         return  (
             <ReactDataGrid
+                ref={(grid) => { this.grid = grid; }}
                 enableDragAndDrop={enable_drag_and_drop}
                 headerRowHeight={header_row_height}
                 minHeight={this.getMinHeight()}
