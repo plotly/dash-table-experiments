@@ -186,6 +186,8 @@ class Tests(IntegrationTests):
         options = {
             'row': [
                 ['single row', ROW],
+                ['two rows', ROW*2],
+                ['three rows', ROW*2],
                 ['five rows', ROW*5],
                 ['thirty rows', ROW*30]
             ],
