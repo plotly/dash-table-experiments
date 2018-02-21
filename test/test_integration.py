@@ -3,23 +3,22 @@ from datetime import datetime
 import io
 import itertools
 import os
-import sys
-import time
 import pandas as pd
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import sys
+from textwrap import dedent
+import time
+try:
+    from urlparse import urlparse
+except ImportError:
+    from urllib.parse import urlparse
 
 import dash
 from dash.dependencies import Input, Output, State
 import dash_html_components as html
 import dash_core_components as dcc
 import dash_table_experiments as dt
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-import time
-from textwrap import dedent
-try:
-    from urlparse import urlparse
-except ImportError:
-    from urllib.parse import urlparse
 
 from .IntegrationTests import IntegrationTests
 from .utils import assert_clean_console
