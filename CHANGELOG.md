@@ -2,12 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## 0.6.0
-## Fixed
+## 0.6.0 - 2018-02-21
+### Fixed
 - Fixed issue with `min_height` not expanding if `len(rows)` was greater than 10.
 - Fixed issues with `row_height` property
 
-## Added
+### Added
 - `max_rows_in_viewport` to expand the viewport up to `max_rows_in_viewport` rows.
 
 To summarize the height behaviour:
