@@ -1,6 +1,7 @@
 import base64
 from datetime import datetime
 import io
+import itertools
 import os
 import sys
 import time
@@ -177,3 +178,48 @@ class Tests(IntegrationTests):
         self.wait_for_element_by_css_selector('#button').click()
         time.sleep(5)
         self.snapshot('test_update_rows_from_callback-2')
+
+    def test_height(self):
+        ROW = [
+            {'a': 'AA', 'b': 1},
+        ]
+
+        options = {
+            'row': [
+                ['single row', ROW],
+                ['five rows', ROW*5],
+                ['thirty rows', ROW*30]
+            ],
+            'min_height': [
+                ['none', None],
+                ['800', 800],
+                ['200', 200]
+            ],
+            'filterable': [
+                ['true', True],
+                ['false', False]
+            ]
+        }
+
+        layout = []
+        for opt in itertools.product(options['row'],
+                                     options['min_height'],
+                                     options['filterable']):
+            layout.extend([
+                html.H3('{}, min_height={}, filterable={}'.format(
+                    *[o[0] for o in opt]
+                )),
+                dt.DataTable(
+                    rows=opt[0][1],
+                    min_height=opt[1][1],
+                    filterable=opt[2][1]
+                )
+            ])
+
+        app = dash.Dash()
+        app.layout = html.Div(layout + [html.Div(id='waitfor')])
+
+        self.startServer(app)
+
+        self.wait_for_element_by_css_selector('#waitfor')
+        self.snapshot('heights')
