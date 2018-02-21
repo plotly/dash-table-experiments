@@ -179,17 +179,17 @@ class Tests(IntegrationTests):
         self.snapshot('test_update_rows_from_callback-2')
 
     def test_height(self):
-        ROW = [
-            {'a': 'AA', 'b': 1},
-        ]
+        def gen_rows(length):
+            return [
+                {'a': 'AA', 'b': i} for i in range(length)
+            ]
 
         options = {
             'row': [
-                ['single row', ROW],
-                ['two rows', ROW*2],
-                ['three rows', ROW*2],
-                ['five rows', ROW*5],
-                ['thirty rows', ROW*30]
+                ['single row', gen_rows(1)],
+                ['five rows', gen_rows(5)],
+                ['ten rows', gen_rows(10)],
+                ['thirty rows', gen_rows(30)]
             ],
             'min_height': [
                 ['none', None],
@@ -199,28 +199,50 @@ class Tests(IntegrationTests):
             'filterable': [
                 ['true', True],
                 ['false', False]
+            ],
+            'row_height': [
+                ['none', None],
+                ['20', 20],
+                ['50', 50]
+            ],
+            'max_rows_in_viewport': [
+                ['none', None],
+                ['2', 2],
+                ['15', 15]
             ]
         }
 
         layout = []
         for opt in itertools.product(options['row'],
                                      options['min_height'],
-                                     options['filterable']):
+                                     options['filterable'],
+                                     options['row_height'],
+                                     options['max_rows_in_viewport']):
+            kwargs = {'rows': opt[0][1], 'filterable': opt[2][1]}
+            if opt[1][1] is not None:
+                kwargs['min_height'] = opt[1][1]
+            if opt[3][1] is not None:
+                kwargs['row_height'] = opt[3][1]
+            if opt[4][1] is not None:
+                kwargs['max_rows_in_viewport'] = opt[4][1]
             layout.extend([
-                html.H3('{}, min_height={}, filterable={}'.format(
-                    *[o[0] for o in opt]
-                )),
-                dt.DataTable(
-                    rows=opt[0][1],
-                    min_height=opt[1][1],
-                    filterable=opt[2][1]
-                )
+                html.H3(
+                    '''
+                        {},
+                        min_height={},
+                        filterable={},
+                        row_height={},
+                        max_rows={}
+                    '''.format(
+                            *[o[0] for o in opt]
+                    )),
+                dt.DataTable(**kwargs)
             ])
 
         app = dash.Dash()
         app.layout = html.Div(layout + [html.Div(id='waitfor')])
 
         self.startServer(app)
-
+        import ipdb; ipdb.set_trace()
         self.wait_for_element_by_css_selector('#waitfor')
         self.snapshot('heights')
