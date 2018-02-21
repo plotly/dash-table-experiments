@@ -257,12 +257,23 @@
         "required": false,
         "description": ""
       },
+      "max_rows_in_viewport": {
+        "type": {
+          "name": "number"
+        },
+        "required": false,
+        "description": "Maximum number of of rows to display in the viewport.\nIf `max_rows_in_viewport` is 10, then if there are 15 rows,\nonly 10 will be displayed in the viewport but if there are 5 rows,\nthen the viewport will shrink to only show those 5 rows.\nThis takes precedence over `min_height`."
+      },
       "row_height": {
         "type": {
           "name": "number"
         },
         "required": false,
-        "description": ""
+        "description": "",
+        "defaultValue": {
+          "value": "35",
+          "computed": false
+        }
       },
       "row_scroll_timeout": {
         "type": {
