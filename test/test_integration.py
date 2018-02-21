@@ -243,6 +243,5 @@ class Tests(IntegrationTests):
         app.layout = html.Div(layout + [html.Div(id='waitfor')])
 
         self.startServer(app)
-        import ipdb; ipdb.set_trace()
         self.wait_for_element_by_css_selector('#waitfor')
         self.snapshot('heights')
