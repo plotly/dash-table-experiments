@@ -16,6 +16,7 @@
 #' @param header_row_height  
 #' @param min_height  
 #' @param min_width  
+#' @param max_rows_in_viewport Maximum number of of rows to display in the viewport. If `max_rows_in_viewport` is 10, then if there are 15 rows, only 10 will be displayed in the viewport but if there are 5 rows, then the viewport will shrink to only show those 5 rows. This takes precedence over `min_height`. 
 #' @param row_height  
 #' @param row_scroll_timeout  
 #' @param tab_index  
@@ -26,7 +27,7 @@
 #' @param sortDirection  
 #' @param setProps  
 
-DataTable <- function(id = NULL, editable = TRUE, filterable = FALSE, sortable = TRUE, resizable = TRUE, column_widths = NULL, columns = NULL, row_selectable = FALSE, selected_row_indices = list(), enable_drag_and_drop = NULL, header_row_height = NULL, min_height = NULL, min_width = NULL, row_height = NULL, row_scroll_timeout = NULL, tab_index = NULL, filters = list(), rows = NULL, row_update = NULL, sortColumn = NULL, sortDirection = NULL, setProps = NULL) {
+DataTable <- function(id = NULL, editable = TRUE, filterable = FALSE, sortable = TRUE, resizable = TRUE, column_widths = NULL, columns = NULL, row_selectable = FALSE, selected_row_indices = list(), enable_drag_and_drop = NULL, header_row_height = NULL, min_height = NULL, min_width = NULL, max_rows_in_viewport = NULL, row_height = 35, row_scroll_timeout = NULL, tab_index = NULL, filters = list(), rows = NULL, row_update = NULL, sortColumn = NULL, sortDirection = NULL, setProps = NULL) {
 
 component <- list(
   props = list(
@@ -43,6 +44,7 @@ component <- list(
 				header_row_height=header_row_height, 
 				min_height=min_height, 
 				min_width=min_width, 
+				max_rows_in_viewport=max_rows_in_viewport, 
 				row_height=row_height, 
 				row_scroll_timeout=row_scroll_timeout, 
 				tab_index=tab_index, 
@@ -55,7 +57,7 @@ component <- list(
   ),
   type = 'DataTable',
   namespace = 'dash_table_experiments',
-  propNames = c('id', 'editable', 'filterable', 'sortable', 'resizable', 'column_widths', 'columns', 'row_selectable', 'selected_row_indices', 'enable_drag_and_drop', 'header_row_height', 'min_height', 'min_width', 'row_height', 'row_scroll_timeout', 'tab_index', 'filters', 'rows', 'row_update', 'sortColumn', 'sortDirection', 'setProps'),
+  propNames = c('id', 'editable', 'filterable', 'sortable', 'resizable', 'column_widths', 'columns', 'row_selectable', 'selected_row_indices', 'enable_drag_and_drop', 'header_row_height', 'min_height', 'min_width', 'max_rows_in_viewport', 'row_height', 'row_scroll_timeout', 'tab_index', 'filters', 'rows', 'row_update', 'sortColumn', 'sortDirection', 'setProps'),
   package = 'dashTable'
 )
 

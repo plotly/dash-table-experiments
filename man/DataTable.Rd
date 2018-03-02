@@ -8,9 +8,9 @@ DataTable(id = NULL, editable = TRUE, filterable = FALSE,
   sortable = TRUE, resizable = TRUE, column_widths = NULL,
   columns = NULL, row_selectable = FALSE, selected_row_indices = list(),
   enable_drag_and_drop = NULL, header_row_height = NULL,
-  min_height = NULL, min_width = NULL, row_height = NULL,
-  row_scroll_timeout = NULL, tab_index = NULL, filters = list(),
-  rows = NULL, row_update = NULL, sortColumn = NULL,
+  min_height = NULL, min_width = NULL, max_rows_in_viewport = NULL,
+  row_height = 35, row_scroll_timeout = NULL, tab_index = NULL,
+  filters = list(), rows = NULL, row_update = NULL, sortColumn = NULL,
   sortDirection = NULL, setProps = NULL)
 }
 \arguments{
@@ -39,6 +39,8 @@ DataTable(id = NULL, editable = TRUE, filterable = FALSE,
 \item{min_height}{}
 
 \item{min_width}{}
+
+\item{max_rows_in_viewport}{Maximum number of of rows to display in the viewport. If `max_rows_in_viewport` is 10, then if there are 15 rows, only 10 will be displayed in the viewport but if there are 5 rows, then the viewport will shrink to only show those 5 rows. This takes precedence over `min_height`.}
 
 \item{row_height}{}
 
