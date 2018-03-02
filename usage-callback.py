@@ -28,9 +28,9 @@ dataframes = {'DF_GAPMINDER': DF_GAPMINDER,
 
 
 def get_data_object(user_selection):
-    '''
+    """
     For user selections, return the relevant in-memory data frame.
-    '''
+    """
     return dataframes[user_selection]
 
 
@@ -53,20 +53,20 @@ app.layout = html.Div([
         id='table'
     ),
     html.Div(id='selected-indexes')
-], className="container")
+], className='container')
 
 
 @app.callback(Output('table', 'rows'), [Input('field-dropdown', 'value')])
 def update_table(user_selection):
-    '''
+    """
     For user selections, return the relevant table
-    '''
+    """
     df = get_data_object(user_selection)
     return df.to_dict('records')
 
 
 app.css.append_css({
-    "external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"
+    'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'
 })
 
 if __name__ == '__main__':

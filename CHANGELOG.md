@@ -2,6 +2,19 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.6.0 - 2018-02-21
+### Fixed
+- Fixed issue with `min_height` not expanding if `len(rows)` was greater than 10.
+- Fixed issues with `row_height` property
+
+### Added
+- `max_rows_in_viewport` to expand the viewport up to `max_rows_in_viewport` rows.
+
+To summarize the height behaviour:
+- By default, up to 10 rows are displayed. If only 5 rows are supplied, only 5 rows will be displayed and the viewport will shrink. If 15 rows are supplied, 10 rows are displayed.
+- If `max_rows_in_viewport` is supplied, up to `max_rows_in_viewport` will be displayed. This is `10` by default. So, if `max_rows_in_viewport` is 20 and 5 rows are supplied, only 5 rows will be displayed and the viewport will shrink. If 25 rows are supplied, only 20 rows will be displayed.
+- If `min_height` is supplied, the viewport will be resized to `min_height` regardless of the number of rows that are supplied.
+- If `max_rows_in_viewport` is supplied _and_ `min_height` is supplied, `max_rows_in_viewport` takes precedence.
 
 ## 0.5.4
 ### Fixed

@@ -116,7 +116,7 @@ def update_figure(rows, selected_row_indices):
 
 
 app.css.append_css({
-    "external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"
+    'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'
 })
 
 if __name__ == '__main__':

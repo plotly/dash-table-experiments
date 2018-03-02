@@ -32,7 +32,7 @@ app.layout = html.Div([
         id='editable-table'
     ),
     html.Div([
-        html.Pre(id='output', className="two columns"),
+        html.Pre(id='output', className='two columns'),
         html.Div(
             dcc.Graph(
                 id='graph',
@@ -40,10 +40,10 @@ app.layout = html.Div([
                     'overflow-x': 'wordwrap'
                 }
             ),
-            className="ten columns"
+            className='ten columns'
         )
-    ], className="row")
-], className="container")
+    ], className='row')
+], className='container')
 
 
 @app.callback(
@@ -70,7 +70,7 @@ def update_figure(rows):
 
 
 app.css.append_css({
-    "external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"
+    'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'
 })
 
 if __name__ == '__main__':

@@ -217,14 +217,28 @@ class DataTable extends Component {
     }
 
     getMinHeight() {
-        if (typeof DataTable.defaultProps.min_height === 'undefined' && this.getSize() < 10) {
-            var filter_box_space = 0
-            if (this.props.filterable && this.getSize() < 2) {
-                filter_box_space = 45
-            }
-            return (this.getSize() * 35) + 35 + filter_box_space + 15;
+        const row_height = (R.has('row_height', this.props) ?
+                            this.props.row_height :
+                            DataTable.defaultProps.row_height);
+        const {filterable} = this.props;
+        const nRows = this.getSize();
+
+        if (R.has('max_rows_in_viewport', this.props) ||
+                !R.has('min_height', this.props)) {
+            const headerHeight = row_height;
+            const borderHeight = 2;
+            // when the filter panel expands, it adds a 45px tall row
+            const filterSearchPanelHeight = filterable ? 45 : 0;
+            const nRowsToDisplay = R.propOr(10, 'max_rows_in_viewport', this.props);
+            return (
+                (R.min(nRows, nRowsToDisplay) * row_height) +
+                filterSearchPanelHeight +
+                headerHeight +
+                borderHeight
+            );
+        } else {
+            return this.props.min_height;
         }
-        return (typeof DataTable.defaultProps.min_height !== 'undefined') ? DataTable.defaultProps.min_height : 350;
     }
 
     onRowsSelected(rows) {
@@ -310,7 +324,7 @@ class DataTable extends Component {
                 headerRowHeight={header_row_height}
                 minHeight={this.getMinHeight()}
                 minWidth={min_width}
-                row_height={row_height}
+                rowHeight={row_height}
                 row_scroll_timeout={row_scroll_timeout}
                 tab_index={tab_index}
 
@@ -380,6 +394,15 @@ DataTable.propTypes = {
     header_row_height: PropTypes.number,
     min_height: PropTypes.number,
     min_width: PropTypes.number,
+
+    /**
+     * Maximum number of of rows to display in the viewport.
+     * If `max_rows_in_viewport` is 10, then if there are 15 rows,
+     * only 10 will be displayed in the viewport but if there are 5 rows,
+     * then the viewport will shrink to only show those 5 rows.
+     * This takes precedence over `min_height`.
+     */
+    max_rows_in_viewport: PropTypes.number,
     // TODO - over_scan
     // over_scan: PropTypes.shape({
     //     cols_start: PropTypes.number,
@@ -413,7 +436,8 @@ DataTable.defaultProps = {
     resizable: true,
     filters: {},
     selected_row_indices: [],
-    row_selectable: false
+    row_selectable: false,
+    row_height: 35
 }
 
 export default DataTable;
