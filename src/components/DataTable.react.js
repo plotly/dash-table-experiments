@@ -241,19 +241,34 @@ class DataTable extends Component {
         }
     }
 
-    onRowsSelected(rows) {
+    onRowsSelected(rowSelections) {
+        const rows = R.pluck('row', rowSelections);
+        
+        if (this.props.row_single_select) {
+            // no action when try to select multiple elements like select all
+            if (R.length(rows) == 1) {
+                this._absolute.selected_row_objects = rows;
 
-        this._absolute.selected_row_objects = R.union(
-            R.pluck('row', rows),
-            this._absolute.selected_row_objects
-        );
+                this.updateProps({
+                    selected_row_indices: filterIndices(
+                        this._absolute.selected_row_objects,
+                        this.state.rows // only the visible rows
+                    )
+                });
+            }
+        } else {
+            this._absolute.selected_row_objects = R.union(
+                rows,
+                this._absolute.selected_row_objects
+            );
 
-        this.updateProps({
-            selected_row_indices: filterIndices(
-                this._absolute.selected_row_objects,
-                this.state.rows // only the visible rows
-            )
-        });
+            this.updateProps({
+                selected_row_indices: filterIndices(
+                    this._absolute.selected_row_objects,
+                    this.state.rows // only the visible rows
+                )
+            });
+        }
     }
 
     onRowsDeselected(rowSelections) {
@@ -388,6 +403,7 @@ DataTable.propTypes = {
 
     row_selectable: PropTypes.bool,
     selected_row_indices: PropTypes.array,
+    row_single_select: PropTypes.bool,
 
     // These props are passed directly into the component
     enable_drag_and_drop: PropTypes.bool,
@@ -437,6 +453,7 @@ DataTable.defaultProps = {
     filters: {},
     selected_row_indices: [],
     row_selectable: false,
+    row_single_select: false,
     row_height: 35,
 }
 
