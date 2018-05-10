@@ -2,7 +2,7 @@
 % Please edit documentation in R/components.R
 \name{EditableTable}
 \alias{EditableTable}
-\title{EditableTable dash-table-experiments component}
+\title{EditableTable component}
 \usage{
 EditableTable(id = NULL, changed_data = list(), dataframe = NULL,
   column_order = NULL, index_name = "", editable = FALSE,

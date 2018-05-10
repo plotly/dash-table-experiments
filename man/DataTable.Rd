@@ -2,7 +2,7 @@
 % Please edit documentation in R/components.R
 \name{DataTable}
 \alias{DataTable}
-\title{DataTable dash-table-experiments component}
+\title{DataTable component}
 \usage{
 DataTable(id = NULL, editable = TRUE, filterable = FALSE,
   sortable = TRUE, resizable = TRUE, column_widths = NULL,

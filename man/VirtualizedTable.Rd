@@ -2,22 +2,21 @@
 % Please edit documentation in R/components.R
 \name{VirtualizedTable}
 \alias{VirtualizedTable}
-\title{VirtualizedTable dash-table-experiments component}
+\title{VirtualizedTable component}
 \usage{
 VirtualizedTable(id = NULL, changed_data = NULL, dataframe = NULL,
   display_index = TRUE, index_name = "", editable = TRUE,
   styles = list(container = list(`font-size` = "1rem"), cell =
-  list(`white-space` = "nowrap", `border-left` = "'thin lightgrey solid'",
-  `border-bottom` = "'thin lightgrey solid'", `border-top` = "none",
+  list(`white-space` = "nowrap", `border-left` = "thin lightgrey solid",
+  `border-bottom` = "thin lightgrey solid", `border-top` = "none",
   `border-right` = "none", `text-overflow` = "ellipsis", `overflow-x` =
   "hidden", `box-sizing` = "border-box"), `cell-rightmost` = list(`border-right`
-  = "'thin lightgrey solid'"), header = list(`text-align` = "left",
-  `border-left` = "'thin lightgrey solid'", `border-bottom` =
-  "'thin lightgrey solid'", `border-top` = "'thin lightgrey solid'",     
-  `font-weight` = 600, display = "inline-block", `box-sizing` = "border-box"),
-  `header-rightmost` = list(`border-right` = "'thin lightgrey solid'")),
-  column_width = 80, row_height = 20, height = 500, width = 600,
-  setProps = NULL)
+  = "thin lightgrey solid"), header = list(`text-align` = "left", `border-left`
+  = "thin lightgrey solid", `border-bottom` = "thin lightgrey solid",
+  `border-top` = "thin lightgrey solid",      `font-weight` = 600, display =
+  "inline-block", `box-sizing` = "border-box"), `header-rightmost` =
+  list(`border-right` = "thin lightgrey solid")), column_width = 80,
+  row_height = 20, height = 500, width = 600, setProps = NULL)
 }
 \arguments{
 \item{id}{The ID of the component, used to identify the component in Dash callbacks}
