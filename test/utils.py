@@ -1,6 +1,3 @@
-import time
-
-
 def assert_clean_console(TestClass):
     def assert_no_console_errors(TestClass):
         TestClass.assertEqual(
