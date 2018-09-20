@@ -17,7 +17,7 @@ Example from `usage-editable.py`
 
 ## Usage ##
 
-```
+```bash
 # Install 
 $ pip install dash-table-experiments
 ```
@@ -25,7 +25,7 @@ $ pip install dash-table-experiments
 ### Usage with Callbacks ###
 Per [this Dash community answer](https://community.plot.ly/t/dash-datatable-using-callbacks/6756/2), to use callbacks with `dash-table-experiments` there are two key steps (for a full working example see [usage-callback.py](./usage-callback.py)):
 
-```
+```python
 # 1. Declare the table in app.layout
 dt.DataTable(
     rows=[{}], # initialise the rows
