@@ -197,6 +197,17 @@
         "required": false,
         "description": "Column widths (in pixels) of each column"
       },
+      "autowidth_last_cell": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "Allow callers to explicitly not set the last cell width, even if\ndefined, such that we allow react-table-grid to do the calculation.\nDefault false.",
+        "defaultValue": {
+          "value": "false",
+          "computed": false
+        }
+      },
       "columns": {
         "type": {
           "name": "arrayOf",

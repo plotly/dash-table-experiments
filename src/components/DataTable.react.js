@@ -91,8 +91,14 @@ class DataTable extends Component {
             filterable: Boolean(props.filterable)
         }));
         if (props.column_widths) {
-            newState.columns.forEach((c, i) => {
-                c.width = props.column_widths[i];
+            newState.columns.forEach((c, i, a) => {
+                if (props.autowidth_last_cell) {
+                    if (i < a.length - 1) {
+                        c.width = props.column_widths[i];
+                    }
+                } else {
+                    c.width = props.column_widths[i];
+                }
             });
         }
 
@@ -380,6 +386,13 @@ DataTable.propTypes = {
     column_widths: PropTypes.arrayOf(PropTypes.number),
 
     /**
+     * Allow callers to explicitly not set the last cell width, even if
+     * defined, such that we allow react-table-grid to do the calculation.
+     * Default false.
+     */
+    autowidth_last_cell: PropTypes.bool,
+
+    /**
      * Order of columns. Note that the column names are specified in
      * `rows` but without order. This attribute allows you to specify
      * a custom order for your columns.
@@ -434,6 +447,7 @@ DataTable.defaultProps = {
     filterable: false,
     sortable: true,
     resizable: true,
+    autowidth_last_cell: false,
     filters: {},
     selected_row_indices: [],
     row_selectable: false,
