@@ -1,6 +1,6 @@
 # dash-table-experiments
 
-## DEPRECATED
+## THIS PACKAGE IS NO LONGER SUPPORTED
 If you are looking for a first class data table component for Dash head on over to https://github.com/plotly/dash-table and check out the documentation https://dash.plot.ly/datatable.
 
 
