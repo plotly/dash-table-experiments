@@ -20,7 +20,7 @@ functools32==3.2.3.post2
 idna==2.6
 ipaddress==1.0.18
 ipdb==0.10.3
-ipython==5.4.1
+ipython==8.10.0
 ipython-genutils==0.2.0
 itsdangerous==0.24
 Jinja2==2.9.6
